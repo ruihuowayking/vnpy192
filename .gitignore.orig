@@ -1,0 +1,118 @@
+<<<<<<< HEAD
+# Python
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints
+
+# IDE
+.vscode
+.idea
+*.wpr
+*.wpu
+.vs
+x64
+
+# Temp
+build
+dist
+*.local
+
+# vn.py
+.vntrader
+=======
+# C++源代码
+ipch/
+Release/
+
+*.sdf
+*.suo
+*.exp
+*.pdb
+*.cd
+*.o
+*.out
+
+# Python编译文件
+*.pyc
+*.pyo
+
+# WingIDE文件
+*.wpr
+*.wpu
+
+# 压缩文件
+*.zip
+
+# API的.con文件
+*.con
+
+# visual studio
+*.opensdf
+
+# 本地持久化文件
+*.vn
+
+# 其他文件
+*.dump
+*.vssettings
+*.klg
+*.lkc
+
+# 不想同步的
+*.local
+*.temp
+*.vt
+*.log
+*.bak
+
+# 编译临时文件夹
+build/
+
+# CMake临时文件
+CMakeCache.txt
+CMakeFiles/
+build/cmake_install.cmake
+build/Makefile
+
+# 目录
+.idea
+.vscode
+.python-version
+.gitignore
+<<<<<<< HEAD
+temp/
+.venv
+
+# setup.py install 临时文件
+dist
+*.egg
+*.egg-info
+
+>>>>>>> upstream/v1.9.2-LTS
+=======
+<<<<<<< Updated upstream
+examples/CtaBacktesting/rb1901_1116.csv
+examples/VnTrader/temp/ContractData.vt.dir
+examples/VnTrader/temp/XTP/log/quote.log.20181116
+examples/VnTrader/temp/XTP/log/trade.log.20181116
+examples/CtaTrading/CTP_connect.json
+examples/VnTrader/CTP_connect_backup.json
+examples/VnTrader/temp/ContractData.vt.dat
+examples/VnTrader/temp/XTP/log/quote.log.20181107
+examples/VnTrader/temp/XTP/log/trade.log.20181107
+examples/VnTrader/temp/
+examples/CtaTrading/temp/
+examples/DataRecording/CTP_connect.json
+examples/VnTrader/CTP_connect.json
+=======
+examples/VnTrader/temp/
+examples/CtaTrading/temp/
+examples/CtaTrading/CTP_connect.json
+examples/VnTrader/CTP_connect.json
+examples/VnTrader/CTP_connect_backup.json
+
+>>>>>>> Stashed changes
+
+
+>>>>>>> leon190/master

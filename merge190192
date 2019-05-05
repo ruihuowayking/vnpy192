@@ -1,0 +1,146 @@
+On branch leon190master
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+
+Changes to be committed:
+
+	new file:   .project
+	new file:   .pydevproject
+	renamed:    examples/CtaBacktesting/rb0000_1min.csv -> dist/vnpy-1.9.0-py2.7.egg
+	modified:   examples/CtaBacktesting/loadCsv.py
+	new file:   examples/CtaBacktesting/loadCsv1.py
+	new file:   examples/CtaBacktesting/runBacktesting_LZ.py
+	new file:   examples/CtaBacktesting/strategyDTIntraDay.py
+	new file:   examples/CtaBacktesting/strategyTurtle01.py
+	new file:   examples/CtaBacktesting/strategyTurtle_Test1Min.py
+	modified:   examples/CtaTrading/CTA_setting.json
+	new file:   examples/CtaTrading/CTA_settingbk0419.json
+	deleted:    examples/CtaTrading/CTP_connect.json
+	new file:   examples/CtaTrading/Symbol_volsize.json
+	new file:   examples/CtaTrading/custom_setting.json
+	modified:   examples/CtaTrading/runCtaTrading.py
+	new file:   examples/CtaTrading/temp/ContractData.vt.dat
+	new file:   examples/CtaTrading/temp/ContractData.vt.dir
+	deleted:    examples/DataRecording/CTP_connect.json
+	new file:   examples/DataRecording/DB_backup.sh
+	new file:   examples/DataRecording/DR_mapping.json
+	modified:   examples/DataRecording/DR_setting.json
+	new file:   examples/DataRecording/Symbol_volsize.json
+	new file:   examples/DataRecording/ma.py
+	new file:   examples/DataRecording/ma_remove.py
+	modified:   examples/DataRecording/runDataCleaning.py
+	new file:   examples/DataRecording/runDataCleaning_hot.py
+	new file:   examples/DataRecording/runDataRecording_LeonTest.py
+	new file:   examples/DataRecording/runDrstatistics.py
+	new file:   examples/DataRecording/runFillMissingCloseMinuteData.py
+	new file:   examples/DataRecording/runFillMissingDailyData.py
+	new file:   examples/DataRecording/runRemoveOldData.py
+	new file:   examples/DataRecording/temp/ContractData.vt.dat
+	new file:   examples/DataRecording/temp/ContractData.vt.dir
+	new file:   examples/VnTrader/CTA_setting_Test.json
+	deleted:    examples/VnTrader/CTP_connect.json
+	new file:   examples/VnTrader/Symbol_volsize.json
+	new file:   examples/VnTrader/custom_setting.json
+	new file:   examples/VnTrader/run_backup.py
+	new file:   examples/VnTrader/temp/ContractData.vt.dat
+	new file:   examples/VnTrader/temp/SpreadTradingAlgo.vt.dat
+	new file:   examples/VnTrader/temp/SpreadTradingAlgo.vt.dir
+	new file:   examples/runBacktesting.py
+	new file:   output.txt
+	new file:   vnpy.egg-info/PKG-INFO
+	new file:   vnpy.egg-info/SOURCES.txt
+	new file:   vnpy.egg-info/dependency_links.txt
+	new file:   vnpy.egg-info/requires.txt
+	new file:   vnpy.egg-info/top_level.txt
+	new file:   vnpy/api/ctp/vnctpmd.so
+	new file:   vnpy/api/ctp/vnctpmd/test/vnctpmd.so
+	new file:   vnpy/api/ctp/vnctptd.so
+	new file:   vnpy/api/ctp/vnctptd/test/vnctptd.so
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeCache.txt
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/3.5.1/CMakeDetermineCompilerABI_CXX.bin
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/3.5.1/CMakeSystem.cmake
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/3.5.1/CompilerIdCXX/a.out
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/CMakeDirectoryInformation.cmake
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/CMakeOutput.log
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/Makefile2
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/TargetDirectories.txt
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/feature_tests.bin
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/CXX.includecache
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/DependInfo.cmake
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/build.make
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/ContractCondition.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/DefaultEWrapper.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/EClient.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/EClientSocket.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/EDecoder.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/EMessage.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/EMutex.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/EReader.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/EReaderOSSignal.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/EReaderWMSignal.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/ESocket.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/MarginCondition.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/OperatorCondition.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/OrderCondition.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/PercentChangeCondition.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/PriceCondition.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/SoftDollarTier.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/StdAfx.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/TimeCondition.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/VolumeCondition.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/client/executioncondition.cpp.o
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/cmake_clean.cmake
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/depend.internal
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/flags.make
+	modified:   vnpy/api/ib/ibapi/linux/build/CMakeFiles/twsapi.dir/link.txt
+	modified:   vnpy/api/ib/ibapi/linux/build/Makefile
+	modified:   vnpy/api/ib/ibapi/linux/build/cmake_install.cmake
+	modified:   vnpy/api/ib/ibapi/linux/build/lib/twsapi.so
+	modified:   vnpy/api/ib/vnib.so
+	modified:   vnpy/api/lts/vnltsmd.so
+	new file:   vnpy/api/lts/vnltsmd/test/vnltsmd.so
+	modified:   vnpy/api/lts/vnltsqry.so
+	new file:   vnpy/api/lts/vnltsqry/test/vnltsqry.so
+	modified:   vnpy/api/lts/vnltstd.so
+	new file:   vnpy/api/lts/vnltstd/test/vnltstd.so
+	new file:   vnpy/api/xtp/vnxtpquote.so
+	new file:   vnpy/api/xtp/vnxtptrader.so
+	modified:   vnpy/trader/app/ctaStrategy/CTA_setting.json
+	modified:   vnpy/trader/app/ctaStrategy/ctaBacktesting.py
+	modified:   vnpy/trader/app/ctaStrategy/ctaEngine.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/foldstrategy_fromforum.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/persistTradeData.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDayCommon.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDayJ.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_BaseClass.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_Test.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDualThrust.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyDualThrust_TestMultipleContract.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyKeltnerCommon.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyTestClose.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyTestPrice.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyTurtle01.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyTurtleCommon.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyTurtleCommon_Debug.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyTurtleCommon_TestXmin.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_BaseClass.py
+	new file:   vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_Test1Min.py
+	modified:   vnpy/trader/app/dataRecorder/DR_setting.json
+	modified:   vnpy/trader/app/dataRecorder/drEngine.py
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+
+	both modified:   .gitignore
+	both modified:   examples/VnTrader/CTA_setting.json
+	both modified:   examples/VnTrader/run.py
+	both modified:   vnpy/trader/app/ctaStrategy/ctaTemplate.py
+	both modified:   vnpy/trader/gateway/ctpGateway/ctpGateway.py
+	both added:      vnpy/trader/vtUtility.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	merge190192
+

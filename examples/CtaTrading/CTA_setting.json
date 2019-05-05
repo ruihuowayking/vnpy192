@@ -1,19 +1,73 @@
 [
     {
-        "name": "double ema",
-        "className": "EmaDemoStrategy",
-        "vtSymbol": "IF1706"
-    },
-
+        "name": "ma09_DT",
+        "className": "DT_IntraDayCommonStrategy",
+        "vtSymbol": "MA909",
+        "strParams":[["unit",2],["p1",0.4],["p2",0.3],["p3",5],["p4",20],["p5",55]]
+    },          
     {
-        "name": "atr rsi",
-        "className": "AtrRsiStrategy",
-        "vtSymbol": "IC1706"
+        "name": "ma09_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "MA909",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
     },
-
     {
-        "name": "king keltner",
-        "className": "KkStrategy",
-        "vtSymbol": "IH1706"
-    }
+        "name": "i09_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "i1909",
+        "strParams":[["unit",1],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    },
+    {
+        "name": "ta09_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "TA909",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    },
+    {
+        "name": "pp09_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "pp1909",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    },
+    {
+        "name": "L09_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "l1909",
+        "strParams":[["unit",1],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    },
+    {
+        "name": "p09_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "p1909",
+        "strParams":[["unit",1],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    },    
+    {
+        "name": "hc10_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "hc1910",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    },  
+    {
+        "name": "i09_DT",
+        "className": "DT_IntraDayCommonStrategy",
+        "vtSymbol": "i1909",
+        "strParams":[["unit",2],["p1",0.4],["p2",0.5],["p3",10],["p4",20],["p5",55]]
+    },     
+    {
+        "name": "Daliang J Dual Thrust DayChart System",
+        "className": "JDualThrust_IntraDayStrategy",
+        "vtSymbol": "j1909"
+    },
+    {
+        "name": "rb10_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "rb1910",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    },
+    {
+        "name": "rb10_DT",
+        "className": "DT_IntraDayCommonStrategy",
+        "vtSymbol": "rb1910",
+        "strParams":[["unit",2],["p1",0.4],["p2",0.4],["p3",4],["p4",20],["p5",55]]
+    }    
 ]

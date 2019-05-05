@@ -1,0 +1,49 @@
+[
+    {
+<<<<<<< HEAD
+        "name": "double ema",
+        "className": "DoubleMaStrategy",
+        "vtSymbol": "rb1905"
+=======
+        "name": "Turtle Test 3 Minutes System",
+        "className": "Turtle01Strategy1M",
+        "vtSymbol": "rb1901"
+>>>>>>> leon190/master
+    },
+    {
+<<<<<<< HEAD
+        "name": "atr rsi",
+        "className": "AtrRsiStrategy",
+        "vtSymbol": "IC1901"
+=======
+        "name": "DT Darchart",
+        "className": "DualThrust_IntraDayStrategy",
+        "vtSymbol": "rb1901"
+>>>>>>> leon190/master
+    },
+    {
+<<<<<<< HEAD
+        "name": "king keltner",
+        "className": "KkStrategy",
+        "vtSymbol": "IH1901"
+    }
+]
+=======
+        "name": "DT Darchart Test",
+        "className": "DualThrust_IntraDay_Test_Strategy",
+        "vtSymbol": "rb1901"
+    },    
+    {
+        "name": "Turtle Short Time system",
+        "className": "Turtle01Strategy",
+        "vtSymbol": "rb1901"
+    },
+    {
+        "name": "Test Open Close",  
+        "className": "TestCloseStrategy",
+        "vtSymbol": "rb1901"
+    }     
+    
+       
+]
+>>>>>>> leon190/master

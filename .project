@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>vnpy</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.python.pydev.PyDevBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.python.pydev.pythonNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>vnpy-1.9.0-py2.7.egg</name>
+			<type>2</type>
+			<location>/home/leon/anaconda2/lib/python2.7/site-packages/vnpy-1.9.0-py2.7.egg</location>
+		</link>
+	</linkedResources>
+</projectDescription>

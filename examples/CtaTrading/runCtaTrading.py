@@ -125,7 +125,9 @@ def runParentProcess():
 
 
 if __name__ == '__main__':
-    runChildProcess()
+    # use automatic method, because I am not able to check every day
+    #runChildProcess()
     
     # 尽管同样实现了无人值守，但强烈建议每天启动时人工检查，为自己的PNL负责
-    #runParentProcess()
+    #take some risk and use automatic way
+    runParentProcess()

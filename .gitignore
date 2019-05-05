@@ -1,26 +1,3 @@
-<<<<<<< HEAD
-# Python
-*.pyc
-
-# Jupyter
-.ipynb_checkpoints
-
-# IDE
-.vscode
-.idea
-*.wpr
-*.wpu
-.vs
-x64
-
-# Temp
-build
-dist
-*.local
-
-# vn.py
-.vntrader
-=======
 # C++源代码
 ipch/
 Release/
@@ -82,10 +59,26 @@ build/Makefile
 .gitignore
 temp/
 .venv
-
+examples/CtaBacktesting/rb1901_1116.csv
+examples/VnTrader/temp/ContractData.vt.dir
+examples/VnTrader/temp/XTP/log/quote.log.20181116
+examples/VnTrader/temp/XTP/log/trade.log.20181116
+examples/CtaTrading/CTP_connect.json
+examples/VnTrader/CTP_connect_backup.json
+examples/VnTrader/temp/ContractData.vt.dat
+examples/VnTrader/temp/XTP/log/quote.log.20181107
+examples/VnTrader/temp/XTP/log/trade.log.20181107
+examples/VnTrader/temp/
+examples/CtaTrading/temp/
+examples/DataRecording/CTP_connect.json
+examples/VnTrader/CTP_connect.json
+=======
+examples/VnTrader/temp/
+examples/CtaTrading/temp/
+examples/CtaTrading/CTP_connect.json
+examples/VnTrader/CTP_connect.json
+examples/VnTrader/CTP_connect_backup.json
 # setup.py install 临时文件
 dist
 *.egg
 *.egg-info
-
->>>>>>> upstream/v1.9.2-LTS

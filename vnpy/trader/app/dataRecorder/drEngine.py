@@ -230,6 +230,21 @@ class DrEngine(object):
     def onTick(self, tick):
         """Tick更新"""
         vtSymbol = tick.vtSymbol
+        #ignore tick data when CTP is 20:59 or 08:59
+        if  (tick.time[:2] == '08' or tick.time[:2]=='20'):
+            if tick.time[6:8] == '58':            
+                self.writeDrLog("ignore data at 8 or 20")
+            return
+        #ignore tick data when CTP is 09:00 and 09:01 and 09:02
+        if (tick.time[:2] == '09' and (tick.time[3:5]=='00' or tick.time[3:5]=='01' or tick.time[3:5]=='02')):
+            if tick.time[6:8] == '58': 
+                self.writeDrLog("ignore data at 09:00 and 09:01 and 09:02")
+            return            
+        #ignore tick data when CTP is 21:00 and 21:01 and 21:02
+        if (tick.time[:2] == '21' and (tick.time[3:5]=='00' or tick.time[3:5]=='01' or tick.time[3:5]=='02')):
+            if tick.time[6:8] == '58': 
+                self.writeDrLog("ignore data at 21:00 and 21:01 and 21:02")
+            return
         
         if vtSymbol in self.tickSymbolSet:
             self.insertData(TICK_DB_NAME, vtSymbol, tick)
@@ -249,6 +264,21 @@ class DrEngine(object):
     def onBar(self, bar):
         """分钟线更新"""
         vtSymbol = bar.vtSymbol
+
+        #ignore tick data when CTP is 20:59 or 08:59
+        if (bar.time[:2] == '08' or bar.time[:2]=='20'):
+            if bar.time[6:8] == '58': 
+                self.writeDrLog("ignore data at 8 or 20")
+            return
+
+        if (bar.time[:2] == '09' and (bar.time[3:5]=='00' or bar.time[3:5]=='01' or bar.time[3:5]=='02')):
+            if bar.time[6:8] == '58': 
+                self.writeDrLog("ignore data at 09:00 and 09:01 and 09:02")
+            return            
+        if (bar.time[:2] == '21' and (bar.time[3:5]=='00' or bar.time[3:5]=='01' or bar.time[3:5]=='02')):
+            if bar.time[6:8] == '58': 
+                self.writeDrLog("ignore data at 09:00 and 09:01 and 09:02")
+            return
         
         self.insertData(MINUTE_DB_NAME, vtSymbol, bar)
         

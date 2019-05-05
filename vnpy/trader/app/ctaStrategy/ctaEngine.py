@@ -274,6 +274,23 @@ class CtaEngine(AppEngine):
         """处理行情推送"""
         tick = event.dict_['data']
         tick = copy(tick)
+
+
+        #ignore tick data when CTP is 20:59 or 08:59
+        if  (tick.time[:2] == '08' or tick.time[:2]=='20'):
+            if tick.time[6:8] == '58':
+                self.writeCtaLog("ignore data at 8 or 20")
+            return
+        #ignore tick data when CTP is 09:00 and 09:01 and 09:02
+        if (tick.time[:2] == '09' and (tick.time[3:5]=='00' or tick.time[3:5]=='01' or tick.time[3:5]=='02')):
+            if tick.time[6:8] == '58':
+                self.writeCtaLog("ignore data at 09:00 and 09:01 and 09:02")
+            return            
+        #ignore tick data when CTP is 21:00 and 21:01 and 21:02
+        if (tick.time[:2] == '21' and (tick.time[3:5]=='00' or tick.time[3:5]=='01' or tick.time[3:5]=='02')):
+            if tick.time[6:8] == '58':            
+                self.writeCtaLog("ignore data at 21:00 and 21:01 and 21:02")
+            return
         
         # 收到tick行情后，先处理本地停止单（检查是否要立即发出）
         self.processStopOrder(tick)

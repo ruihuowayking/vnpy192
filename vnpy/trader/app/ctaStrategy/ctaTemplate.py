@@ -1,15 +1,41 @@
 # encoding: UTF-8
 
 '''
-本文件包含了CTA引擎中的策略开发用模板，开发策略时需要继承CtaTemplate类。
+本文件包含了CTA引擎中的策略开发用模板，开发策略时需要继承CtaTemplate类。  
 '''
 
 from vnpy.trader.vtConstant import *
-from vnpy.trader.vtUtility import BarGenerator, ArrayManager
+from vnpy.trader.vtUtility import BarGenerator, ArrayManager 
+from vnpy.trader.vtObject import VtBarData 
+from vnpy.trader.vtFunction import getJsonPath 
+from .ctaBase import * 
 
-from .ctaBase import *
+import time,datetime
 
+import json,os,sys
 
+def get_CustSetting():
+    settingFileName = 'custom_setting.json'
+    settingfilePath = getJsonPath(settingFileName, __file__)
+    #settingfilePath = os.path.join(sys.argv[0],settingFileName )    
+    custCfg = [] 
+    dataContent = ""
+    with open(settingfilePath, 'r') as fileObj:
+        #print(f.read())
+        dataContent = fileObj.read()
+    custCfg = json.loads(dataContent)   
+    return custCfg   
+
+def get_VolSize():
+    vol_Size = {}    
+    dataContent = ""
+    settingFileName = 'Symbol_volsize.json'
+    settingfilePath = getJsonPath(settingFileName, __file__)      
+    with open(settingfilePath, 'r') as fileObj:
+        #print(f.read())
+        dataContent = fileObj.read()
+    vol_Size = json.loads(dataContent)   
+    return vol_Size          
 ########################################################################
 class CtaTemplate(object):
     """CTA策略模板"""
@@ -46,6 +72,8 @@ class CtaTemplate(object):
     
     # 同步列表，保存了需要保存到数据库的变量名称
     syncList = ['pos']
+    cust_Setting = []
+    vol_Size = {}
 
     #----------------------------------------------------------------------
     def __init__(self, ctaEngine, setting):
@@ -58,7 +86,16 @@ class CtaTemplate(object):
             for key in self.paramList:
                 if key in setting:
                     d[key] = setting[key]
-    
+        if len(CtaTemplate.cust_Setting) > 0:
+            pass
+        else:  
+            CtaTemplate.cust_Setting = get_CustSetting()
+            
+        if len(CtaTemplate.vol_Size) > 0:
+            pass
+        else:  
+            CtaTemplate.vol_Size = get_VolSize()            
+               
     #----------------------------------------------------------------------
     def onInit(self):
         """初始化策略（必须由用户继承实现）"""

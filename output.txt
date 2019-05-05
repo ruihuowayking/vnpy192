@@ -1,0 +1,98 @@
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	renamed:    examples/VnTrader/CTA_setting.json -> examples/VnTrader/CTA_setting_Test.json
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   examples/CtaTrading/CTA_setting.json
+	modified:   examples/CtaTrading/temp/ContractData.vt.dat
+	modified:   examples/CtaTrading/temp/ContractData.vt.dir
+	modified:   examples/DataRecording/runDataCleaning.py
+	modified:   examples/VnTrader/CTA_setting_Test.json
+	modified:   vnpy/trader/app/ctaStrategy/ctaEngine.py
+	modified:   vnpy/trader/app/ctaStrategy/ctaTemplate.py
+	deleted:    vnpy/trader/app/ctaStrategy/ctaTemplate_dev_v01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDayCommon.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDayJ.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_BaseClass.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_Test.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ag06.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ag12.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_hc01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_hc05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_hc10.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_i01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_i05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_i09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_j01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_j05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_j09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ma01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ma05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ma09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_p01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_p05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_p09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_pp01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_pp05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_pp09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_rb01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_rb05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_rb10.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ru01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ru05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ru09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_sn01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_sn05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_sn09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_sr01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_sr05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_sr09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ta01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ta05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_ta09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_y01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_y05.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyDTIntraDay_y09.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyTurtle01.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyTurtleCommon.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyTurtleCommon_Debug.py
+	modified:   vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_BaseClass.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_hc01.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_hc10.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_i01.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_i09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_j01.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_j09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_l01.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_l09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_ma01.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_ma09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_p01.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_p09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_pp01.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_pp09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_rb01.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_rb10.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_ta01.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_ta09.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_y01.py
+	deleted:    vnpy/trader/app/ctaStrategy/strategy/strategyTurtle_y09.py
+	modified:   vnpy/trader/app/dataRecorder/drEngine.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	examples/CtaTrading/Symbol_volsize.json
+	examples/CtaTrading/custom_setting.json
+	examples/DataRecording/Symbol_volsize.json
+	examples/VnTrader/Symbol_volsize.json
+	output.txt
+	vnpy/trader/app/ctaStrategy/strategy/strategyTurtleCommon_TestXmin.py
+

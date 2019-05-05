@@ -7,7 +7,7 @@
 from __future__ import division
 from __future__ import print_function
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,time
 from collections import OrderedDict
 from itertools import product
 import multiprocessing
@@ -788,7 +788,17 @@ class BacktestingEngine(object):
         totalLosing = 0         # 总亏损金额
         maxDrawdown = 0         # 最大回撤              
         
+        print("entry date:    entry price    exit date    exit price    profit")
+
         for result in resultList:
+            lv_result = ""
+            lv_result = lv_result + result.entryDt.strftime(("%Y-%m-%d %H:%M:%S"))
+            lv_result = lv_result + "    %10.2f" %result.entryPrice
+            lv_result = lv_result + "    " + result.exitDt.strftime(("%Y-%m-%d %H:%M:%S"))
+            lv_result = lv_result + "    %10.2f" %result.exitPrice
+            lv_result = lv_result + "    %10.2f" %result.pnl
+            print(lv_result)           
+
             capital += result.pnl
             maxCapital = max(capital, maxCapital)
             drawdown = capital - maxCapital

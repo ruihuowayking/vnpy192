@@ -1,0 +1,88 @@
+[
+    {
+        "name": "ma05_DT",
+        "className": "DualThrustMultiContractStrategy",
+        "vtSymbol": "MA905",
+        "strParams":[["unit",2],["p1",0.4],["p2",0.3],["p3",5],["p4",15],["p5",0]]
+    },      
+    {
+        "name": "Turtle Test 3 Minutes System",
+        "className": "Turtle01Strategy1M",
+        "vtSymbol": "rb1910"
+    },
+    {
+        "name": "ma05debug_TurtleCommon",
+        "className": "TurtleCommonDebugStrategy",
+        "vtSymbol": "MA905",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",35]]        
+    },    
+    {
+        "name": "ma05_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "MA905",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",35]]        
+    },    
+    {
+        "name": "i05_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "i1905",
+        "strParams":[["unit",1],["p1",20],["p2",20],["p3",10],["p4",10],["p5",35]]        
+    },
+    {
+        "name": "ta05_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "TA905",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",35]]        
+    },
+    {
+        "name": "pp05_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "pp1905",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",35]]        
+    },
+    {
+        "name": "L05_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "l1905",
+        "strParams":[["unit",1],["p1",20],["p2",20],["p3",10],["p4",10],["p5",35]]        
+    },
+    {
+        "name": "p05_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "p1905",
+        "strParams":[["unit",1],["p1",20],["p2",20],["p3",10],["p4",10],["p5",35]]        
+    },    
+    {
+        "name": "hc05_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "hc1905",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",35]]        
+    },
+    {
+        "name": "Turtle Short System",
+        "className": "Turtle01Strategy",
+        "vtSymbol": "rb1905"
+    },
+   
+    {
+        "name": "Dual Thrust DayChart System",
+        "className": "DualThrust_IntraDayStrategy",
+        "vtSymbol": "rb1905"
+    },
+    {
+        "name": "DT_ma05",
+        "className": "ma05_DT_IntraDayStrategy",
+        "vtSymbol": "MA905"
+    },
+    {
+        "name": "DT_i05",
+        "className": "i05_DT_IntraDayStrategy",
+        "vtSymbol": "i1905"
+    },
+    {
+        "name": "Daliang J Dual Thrust DayChart System",
+        "className": "JDualThrust_IntraDayStrategy",
+        "vtSymbol": "j1905"
+    }
+          
+]

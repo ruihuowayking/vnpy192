@@ -12,15 +12,15 @@ from vnpy.trader.app.ctaStrategy.ctaTemplate import CtaTemplate, BarGenerator
 
 
 ########################################################################
-class DualThrustStrategy(CtaTemplate):
+class DualThrustMultiContractStrategy(CtaTemplate):
     """DualThrust交易策略"""
-    className = 'DualThrustStrategy'
-    author = u'用Python的交易员'
+    className = 'DualThrustMultiContractStrategy'
+    author = u'Leon Zhao'
 
     # 策略参数
-    fixedSize = 100
-    k1 = 0.4
-    k2 = 0.6
+    fixedSize = 1
+    k1 = 0.1
+    k2 = 0.1
 
     initDays = 10
 

@@ -1,6 +1,6 @@
 {
     "working": true,
-
+	"marketCloseTime": "15:15:00",
     "tick":
     [
     ],

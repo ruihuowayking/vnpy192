@@ -7,8 +7,7 @@ from datetime import datetime, timedelta, time
 from pymongo import MongoClient
 
 from vnpy.trader.app.ctaStrategy.ctaBase import MINUTE_DB_NAME, TICK_DB_NAME
-
-
+from vnpy.trader.app.ctaStrategy.ctaTemplate import get_VolSize
 # 这里以商品期货为例
 MORNING_START = time(9, 0)
 MORNING_REST = time(10, 15)
@@ -45,7 +44,10 @@ def cleanData(dbName, collectionName, start):
             (dt >= NIGHT_START) or
             (dt < NIGHT_END)):
             cleanRequired = False
-        
+            
+        theTime = data['time']
+        if theTime == '':
+            cleanRequired = True
         # 如果需要清洗
         if cleanRequired:
             print(u'删除无效数据，时间戳：%s' %data['datetime'])
@@ -53,8 +55,46 @@ def cleanData(dbName, collectionName, start):
     
     print(u'清洗完成，数据库：%s, 集合：%s' %(dbName, collectionName))
     
+def fillCloseData(dbName, collectionName, start,cfgdata):
+    """
+    如果收盘数据,比如14点59数据没有，使用前一根K线的数据。
+    """
+    print(u'\n补充收盘数据：%s, 集合：%s, 起始日：%s' %(dbName, collectionName, start))
+    
+    var_Symbol = ""
+    var_Symbol = var_Symbol.join(list(filter(lambda x: x.isalpha(),collectionName)))            
+    var_Time = cfgdata[var_Symbol][1]
+    timeList = var_Time.split(":")
+    startDate = start.replace(hour=int(timeList[0]), minute=int(timeList[1]), second=int(timeList[2]), microsecond=0)
 
+    mc = MongoClient('localhost', 27017)    # 创建MongoClient
+    cl = mc[dbName][collectionName]         # 获取数据集合 
 
+    while startDate <  datetime.now():
+        searchItem = {'datetime':startDate}  
+        searchResult = cl.find_one(searchItem)
+        if searchResult == None:
+            for xMinAgo in range (1,30):
+                searchTime = startDate - timedelta(minutes = xMinAgo)
+                tempItem = {'datetime':searchTime}  
+                tempResult = cl.find_one(tempItem)  
+                if tempResult != None:
+                    #print(tempResult)
+                    tempResult["datetime"] = startDate
+                    tempResult["time"] = var_Time
+                    tempResult["date"] = startDate.strftime("%Y%m%d")
+                    del tempResult["_id"]                  
+                    insertResult = cl.insert_one(tempResult)
+                    print("fill in data for:",startDate)
+                    break
+                else:
+                    pass
+            
+                                
+        else:
+            pass
+        startDate = startDate + timedelta(1)  
+    print(u'\n补充收盘数据完成：%s, 集合：%s, 起始日：%s' %(dbName, collectionName, start))        
 #----------------------------------------------------------------------
 def runDataCleaning():
     """运行数据清洗"""
@@ -64,10 +104,11 @@ def runDataCleaning():
     setting = {}
     with open("DR_setting.json") as f:
         setting = json.load(f)
-        
+    
+    volSize = get_VolSize()    
     # 遍历执行清洗
     today = datetime.now()
-    start = today - timedelta(10)   # 清洗过去10天数据
+    start = today - timedelta(50)   # 清洗过去10天数据
     start.replace(hour=0, minute=0, second=0, microsecond=0)
     
     for l in setting['tick']:
@@ -77,6 +118,7 @@ def runDataCleaning():
     for l in setting['bar']:
         symbol = l[0]
         cleanData(MINUTE_DB_NAME, symbol, start)
+        fillCloseData(MINUTE_DB_NAME, symbol, start,volSize)
     
     print(u'数据清洗工作完成')
     

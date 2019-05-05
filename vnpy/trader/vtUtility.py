@@ -5,19 +5,19 @@ import numpy as np
 import talib
 
 from vnpy.trader.vtObject import VtBarData
-
-
 ########################################################################
 class BarGenerator(object):
     """
     K线合成器，支持：
     1. 基于Tick合成1分钟K线
-    2. 基于1分钟K线合成X分钟K线（X可以是2、3、5、10、15、30	）
+    2. 基于1分钟K线合成X分钟K线（X可以是2、3、5、10、15、30    ）
+    3. Generate DayBar base on minute bar add one callback at init for onDayBar
     """
 
     #----------------------------------------------------------------------
-    def __init__(self, onBar, xmin=0, onXminBar=None):
+    def __init__(self, onBar, xmin=0, onXminBar=None,onDayBar = None,modeXminbar = 'Default' ,vtSymbol = None):
         """Constructor"""
+        #modeXminbar:Default or BarCount
         self.bar = None             # 1分钟K线对象
         self.onBar = onBar          # 1分钟K线回调函数
         
@@ -27,9 +27,39 @@ class BarGenerator(object):
         
         self.lastTick = None        # 上一TICK缓存对象
         
+        # Add by Leon, try to implement Daily Bar Chart
+        # By now, only support one day
+        self.dayBar = None
+        self.onDayBar = onDayBar    
+        self.barCount = 1
+        self.var_CloseTime = "14:59:00" 
+        if vtSymbol != None:
+            self.var_Sizelist = get_VolSize()
+            var_Symbol = ""
+            var_Symbol = var_Symbol.join(list(filter(lambda x: x.isalpha(),vtSymbol)))            
+            self.var_CloseTime = self.var_Sizelist[var_Symbol][1] 
+        self.var_CloseTimeList =  self.var_CloseTime.split(":")    
+        self.xMinBarMode =    modeXminbar 
     #----------------------------------------------------------------------
     def updateTick(self, tick):
         """TICK更新"""
+        #ignore tick data when CTP is 20:59 or 08:59
+        if  (tick.time[:2] == '08' or tick.time[:2]=='20' ):        
+            if tick.time[6:8] == '58':            
+                print("ignore data at 8 or 20")
+            return
+        #ignore tick data when CTP is 09:00 and 09:01 and 09:02
+        if (tick.time[:2] == '09' and (tick.time[3:5]=='00' or tick.time[3:5]=='01' or tick.time[3:5]=='02')):
+            if tick.time[6:8] == '58': 
+                print("ignore data at 09:00 and 09:01 and 09:02")
+            return            
+        #ignore tick data when CTP is 21:00 and 21:01 and 21:02
+        if (tick.time[:2] == '21' and (tick.time[3:5]=='00' or tick.time[3:5]=='01' or tick.time[3:5]=='02')):
+            if tick.time[6:8] == '58': 
+                print("ignore data at 21:00 and 21:01 and 21:02")
+            return
+
+
         newMinute = False   # 默认不是新的一分钟
         
         # 尚未创建对象
@@ -76,51 +106,118 @@ class BarGenerator(object):
         # 缓存Tick
         self.lastTick = tick
 
-    #----------------------------------------------------------------------
+    #---------------------------------------------------------------------- 
     def updateBar(self, bar):
         """1分钟K线更新"""
         # 尚未创建对象
-        if not self.xminBar:
-            self.xminBar = VtBarData()
+        if self.xmin > 0 :
+            if not self.xminBar:
+                self.xminBar = VtBarData()
+                
+                self.xminBar.vtSymbol = bar.vtSymbol
+                self.xminBar.symbol = bar.symbol
+                self.xminBar.exchange = bar.exchange
             
-            self.xminBar.vtSymbol = bar.vtSymbol
-            self.xminBar.symbol = bar.symbol
-            self.xminBar.exchange = bar.exchange
+                self.xminBar.open = bar.open
+                self.xminBar.high = bar.high
+                self.xminBar.low = bar.low            
+                
+                self.xminBar.datetime = bar.datetime    # 以第一根分钟K线的开始时间戳作为X分钟线的时间戳
+            # 累加老K线
+            else:
+                self.xminBar.high = max(self.xminBar.high, bar.high)
+                self.xminBar.low = min(self.xminBar.low, bar.low)
         
-            self.xminBar.open = bar.open
-            self.xminBar.high = bar.high
-            self.xminBar.low = bar.low            
+            # 通用部分
+            self.xminBar.close = bar.close        
+            self.xminBar.openInterest = bar.openInterest
+            self.xminBar.volume += int(bar.volume)                
             
-            self.xminBar.datetime = bar.datetime    # 以第一根分钟K线的开始时间戳作为X分钟线的时间戳
+            self.barCount = self.barCount + 1    
+            # X分钟已经走完
+            if self.xMinBarMode == "BarCount":
+                if self.barCount == self.xmin:   # 可以用X整除
+                    # 生成上一X分钟K线的时间戳
+                    self.xminBar.datetime = self.xminBar.datetime.replace(second=0, microsecond=0)  # 将秒和微秒设为0
+                    self.xminBar.date = self.xminBar.datetime.strftime('%Y%m%d')
+                    self.xminBar.time = self.xminBar.datetime.strftime('%H:%M:%S.%f')
+                    
+                    # 推送
+                    self.onXminBar(self.xminBar)
+                    
+                    # 清空老K线缓存对象
+                    self.xminBar = None
+                    self.barCount = 1
+                else:
+                    pass
+            else:#Default minutes bar generating method
+                if not (bar.datetime.minute + 1) % self.xmin:   # 可以用X整除
+                    # 生成上一X分钟K线的时间戳
+                    self.xminBar.datetime = self.xminBar.datetime.replace(second=0, microsecond=0)  # 将秒和微秒设为0
+                    self.xminBar.date = self.xminBar.datetime.strftime('%Y%m%d')
+                    self.xminBar.time = self.xminBar.datetime.strftime('%H:%M:%S.%f')
+                    
+                    # 推送
+                    self.onXminBar(self.xminBar)
+                    
+                    # 清空老K线缓存对象
+                    self.xminBar = None
+                else:
+                    pass
+        # Add by Leon 18-08-27
+        # Generate/Update Day Chart after every minutes
+        # Major used by strategy, will not persist to database 
+        barTime = bar.datetime  # 当前K的时间
+        if not self.dayBar:
+            self.dayBar = VtBarData()
+            
+            self.dayBar.vtSymbol = bar.vtSymbol
+            self.dayBar.symbol = bar.symbol
+            self.dayBar.exchange = bar.exchange
+        
+            self.dayBar.open = bar.open
+            self.dayBar.high = bar.high
+            self.dayBar.low = bar.low            
+            #change bar Date to next day if time is night
+            #nextDay = 
+            self.dayBar.datetime = bar.datetime    # 以第一根分钟K线的开始时间戳作为X分钟线的时间戳
+            self.dayBar.date = self.dayBar.datetime.strftime('%Y%m%d')
+            self.dayBar.time = self.dayBar.datetime.strftime('%H:%M:%S.%f')            
+
         # 累加老K线
         else:
-            self.xminBar.high = max(self.xminBar.high, bar.high)
-            self.xminBar.low = min(self.xminBar.low, bar.low)
+            self.dayBar.high = max(self.dayBar.high, bar.high)
+            self.dayBar.low = min(self.dayBar.low, bar.low)
     
         # 通用部分
-        self.xminBar.close = bar.close        
-        self.xminBar.openInterest = bar.openInterest
-        self.xminBar.volume += int(bar.volume)                
+        self.dayBar.close = bar.close        
+        self.dayBar.openInterest = bar.openInterest
+        self.dayBar.volume += int(bar.volume)                
             
-        # X分钟已经走完
-        if not (bar.datetime.minute + 1) % self.xmin:   # 可以用X整除
-            # 生成上一X分钟K线的时间戳
-            self.xminBar.datetime = self.xminBar.datetime.replace(second=0, microsecond=0)  # 将秒和微秒设为0
-            self.xminBar.date = self.xminBar.datetime.strftime('%Y%m%d')
-            self.xminBar.time = self.xminBar.datetime.strftime('%H:%M:%S.%f')
+        # New K Bar
+        if  (barTime.hour == int(self.var_CloseTimeList[0]) and barTime.minute == int(self.var_CloseTimeList[1]) ):   # 超过收盘时间，新的一天K线
             
+            
+            self.dayBar.datetime = self.dayBar.datetime.replace(second=0, microsecond=0)  # 将秒和微秒设为0
+            if self.dayBar.datetime.hour == 21:
+                thedate = self.dayBar.datetime +  datetime.timedelta(hours=12)
+                self.dayBar.date = thedate.strftime('%Y%m%d')
+            else:
+                self.dayBar.date = self.dayBar.datetime.strftime('%Y%m%d')            
+            self.dayBar.time = self.dayBar.datetime.strftime('%H:%M:%S.%f')            
             # 推送
-            self.onXminBar(self.xminBar)
-            
+            self.onDayBar(self.dayBar)            
             # 清空老K线缓存对象
-            self.xminBar = None
+            self.dayBar = None
+            #print(dayBar.datetime)
 
     #----------------------------------------------------------------------
     def generate(self):
         """手动强制立即完成K线合成"""
-        self.onBar(self.bar)
-        self.bar = None
-
+        
+        if self.bar != None:
+            self.onBar(self.bar)
+            self.bar = None
 
 
 ########################################################################
@@ -289,3 +386,4 @@ class ArrayManager(object):
         if array:
             return up, down
         return up[-1], down[-1]
+

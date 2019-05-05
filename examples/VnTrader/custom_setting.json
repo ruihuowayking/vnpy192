@@ -1,0 +1,34 @@
+[
+    {
+        "StrategyGroup":"Turtle",
+        "Status":"True",
+        "CaptialAmt": "300000",
+        "SkipTime": "First two minutes after opening will be skip",
+        "MinuteBarGen":"BarCount",
+        "Remark":"Strategy group is only concept, not active"
+    },         
+    {
+        "StrategyGroup":"DT",
+        "Status":"True", 
+        "CaptialAmt": "300000",
+        "SkipTime": "First two minutes after opening will be skip",
+        "MinuteGen":"Default",
+        "Remark":"Strategy group is only concept, not active"
+    },
+    {
+        "StrategyGroup":"Keltner",
+        "Status":"True", 
+        "CaptialAmt": "300000",
+        "SkipTime": "First two minutes after opening will be skip",
+        "MinuteGen":"Default",
+        "Remark":"Strategy group is only concept, not active"
+    },    
+    {
+        "StrategyGroup":"Default",
+        "Status":"True",
+        "CaptialAmt": "300000",
+        "SkipTime": "First two minutes after opening will be skip",
+        "MinuteBarGen":"BarCount",
+        "Remark":"Strategy group is only concept, not active"
+    }    
+]

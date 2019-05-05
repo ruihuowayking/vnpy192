@@ -1,34 +1,35 @@
 {
     "working": true,
-	"marketCloseTime": "15:05:00",
+	"marketCloseTime": "15:15:00",
 
     "tick":
     [
-        ["rb1801", "CTP"],
-        ["m1801", "CTP"],
-        ["SR801", "CTP"],
-        ["IF1712", "CTP"],
-        ["IH1712", "CTP"],
-        ["IC1712", "CTP"]
+
     ],
 
     "bar":
     [
-        ["rb1801", "CTP"],
-        ["m1801", "CTP"],
-        ["SR801", "CTP"],
-        ["IF1712", "CTP"],
-        ["IH1712", "CTP"],
-        ["IC1712", "CTP"]
-    ],
-
+        ["rb1910", "CTP"],
+        ["MA909","CTP"],
+        ["SM909","CTP"],
+        ["SR909","CTP"],
+        ["TA909","CTP"],
+        ["i1909","CTP"],
+        ["j1909","CTP"], 
+        ["jm1909","CTP"],
+        ["l1909","CTP"],
+        ["p1909","CTP"], 
+        ["pp1909","CTP"],                    
+        ["y1909","CTP"],
+        ["ag1906","CTP"], 
+        ["ag1912","CTP"], 
+        ["hc1910","CTP"],
+        ["ru1909","CTP"],
+        ["sn1909","CTP"]
+    ]  ,   
     "active":
     {
-        "rb.HOT": "rb1801",
-        "m.HOT": "m1801",
-        "SR.HOT": "SR801",
-        "IF.HOT": "IF1712",
-        "IH.HOT": "IH1712",
-        "IC.HOT": "IC1712"   
+        "rb.HOT": "rb1910"
+           
     }
 }
