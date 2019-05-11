@@ -22,11 +22,7 @@ class Turtle01Strategy(CtaTemplate):
     author = u'Leon Zhao'
 
     # 策略参数
-<<<<<<< Updated upstream
     initDays = 55
-=======
-    initDays = 25
->>>>>>> Stashed changes
     fixedSize = 2
     longDays = 20
     shortDays = 20
