@@ -1,6 +1,5 @@
 # encoding: UTF-8
 
-from ctaBase import *
 from ctaTemplate import CtaTemplate
 import talib
 import numpy as np
