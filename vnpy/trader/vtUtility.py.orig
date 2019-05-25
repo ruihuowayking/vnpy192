@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # encoding: UTF-8
 
 
@@ -6,23 +5,11 @@ import numpy as np
 import talib
 
 from vnpy.trader.vtObject import VtBarData
-
-
-=======
->>>>>>> leon190/master
 ########################################################################
 class BarGenerator(object):
     """
     K线合成器，支持：
     1. 基于Tick合成1分钟K线
-<<<<<<< HEAD
-    2. 基于1分钟K线合成X分钟K线（X可以是2、3、5、10、15、30	）
-    """
-
-    #----------------------------------------------------------------------
-    def __init__(self, onBar, xmin=0, onXminBar=None):
-        """Constructor"""
-=======
     2. 基于1分钟K线合成X分钟K线（X可以是2、3、5、10、15、30    ）
     3. Generate DayBar base on minute bar add one callback at init for onDayBar
     """
@@ -31,7 +18,6 @@ class BarGenerator(object):
     def __init__(self, onBar, xmin=0, onXminBar=None,onDayBar = None,modeXminbar = 'Default' ,vtSymbol = None):
         """Constructor"""
         #modeXminbar:Default or BarCount
->>>>>>> leon190/master
         self.bar = None             # 1分钟K线对象
         self.onBar = onBar          # 1分钟K线回调函数
         
@@ -41,11 +27,6 @@ class BarGenerator(object):
         
         self.lastTick = None        # 上一TICK缓存对象
         
-<<<<<<< HEAD
-    #----------------------------------------------------------------------
-    def updateTick(self, tick):
-        """TICK更新"""
-=======
         # Add by Leon, try to implement Daily Bar Chart
         # By now, only support one day
         self.dayBar = None
@@ -79,7 +60,6 @@ class BarGenerator(object):
             return
 
 
->>>>>>> leon190/master
         newMinute = False   # 默认不是新的一分钟
         
         # 尚未创建对象
@@ -126,46 +106,6 @@ class BarGenerator(object):
         # 缓存Tick
         self.lastTick = tick
 
-<<<<<<< HEAD
-    #----------------------------------------------------------------------
-    def updateBar(self, bar):
-        """1分钟K线更新"""
-        # 尚未创建对象
-        if not self.xminBar:
-            self.xminBar = VtBarData()
-            
-            self.xminBar.vtSymbol = bar.vtSymbol
-            self.xminBar.symbol = bar.symbol
-            self.xminBar.exchange = bar.exchange
-        
-            self.xminBar.open = bar.open
-            self.xminBar.high = bar.high
-            self.xminBar.low = bar.low            
-            
-            self.xminBar.datetime = bar.datetime    # 以第一根分钟K线的开始时间戳作为X分钟线的时间戳
-        # 累加老K线
-        else:
-            self.xminBar.high = max(self.xminBar.high, bar.high)
-            self.xminBar.low = min(self.xminBar.low, bar.low)
-    
-        # 通用部分
-        self.xminBar.close = bar.close        
-        self.xminBar.openInterest = bar.openInterest
-        self.xminBar.volume += int(bar.volume)                
-            
-        # X分钟已经走完
-        if not (bar.datetime.minute + 1) % self.xmin:   # 可以用X整除
-            # 生成上一X分钟K线的时间戳
-            self.xminBar.datetime = self.xminBar.datetime.replace(second=0, microsecond=0)  # 将秒和微秒设为0
-            self.xminBar.date = self.xminBar.datetime.strftime('%Y%m%d')
-            self.xminBar.time = self.xminBar.datetime.strftime('%H:%M:%S.%f')
-            
-            # 推送
-            self.onXminBar(self.xminBar)
-            
-            # 清空老K线缓存对象
-            self.xminBar = None
-=======
     #---------------------------------------------------------------------- 
     def updateBar(self, bar):
         """1分钟K线更新"""
@@ -270,21 +210,21 @@ class BarGenerator(object):
             # 清空老K线缓存对象
             self.dayBar = None
             #print(dayBar.datetime)
->>>>>>> leon190/master
 
     #----------------------------------------------------------------------
     def generate(self):
         """手动强制立即完成K线合成"""
 <<<<<<< HEAD
-        self.onBar(self.bar)
-        self.bar = None
-
-=======
         
         if self.bar != None:
             self.onBar(self.bar)
             self.bar = None
->>>>>>> leon190/master
+=======
+        if self.bar:
+            self.bar.date = self.bar.datetime.strftime('%Y%m%d')
+            self.bar.time = self.bar.datetime.strftime('%H:%M:%S.%f')
+            self.onBar(self.bar)
+>>>>>>> upstream/v1.9.2-LTS
 
 
 ########################################################################
@@ -315,19 +255,11 @@ class ArrayManager(object):
         if not self.inited and self.count >= self.size:
             self.inited = True
         
-<<<<<<< HEAD
         self.openArray[:-1] = self.openArray[1:]
         self.highArray[:-1] = self.highArray[1:]
         self.lowArray[:-1] = self.lowArray[1:]
         self.closeArray[:-1] = self.closeArray[1:]
         self.volumeArray[:-1] = self.volumeArray[1:]
-=======
-        self.openArray[0:self.size-1] = self.openArray[1:self.size]
-        self.highArray[0:self.size-1] = self.highArray[1:self.size]
-        self.lowArray[0:self.size-1] = self.lowArray[1:self.size]
-        self.closeArray[0:self.size-1] = self.closeArray[1:self.size]
-        self.volumeArray[0:self.size-1] = self.volumeArray[1:self.size]
->>>>>>> leon190/master
     
         self.openArray[-1] = bar.open
         self.highArray[-1] = bar.high
@@ -372,7 +304,6 @@ class ArrayManager(object):
         if array:
             return result
         return result[-1]
-<<<<<<< HEAD
 
     #----------------------------------------------------------------------
     def ema(self, n, array=False):
@@ -382,9 +313,6 @@ class ArrayManager(object):
             return result
         return result[-1]
     
-=======
-        
->>>>>>> leon190/master
     #----------------------------------------------------------------------
     def std(self, n, array=False):
         """标准差"""
@@ -465,8 +393,4 @@ class ArrayManager(object):
         if array:
             return up, down
         return up[-1], down[-1]
-<<<<<<< HEAD
-=======
-    
 
->>>>>>> leon190/master

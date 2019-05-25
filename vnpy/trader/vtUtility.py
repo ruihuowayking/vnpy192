@@ -5,6 +5,7 @@ import numpy as np
 import talib
 
 from vnpy.trader.vtObject import VtBarData
+
 ########################################################################
 class BarGenerator(object):
     """
@@ -216,7 +217,10 @@ class BarGenerator(object):
         """手动强制立即完成K线合成"""
         
         if self.bar != None:
+            self.bar.date = self.bar.datetime.strftime('%Y%m%d')
+            self.bar.time = self.bar.datetime.strftime('%H:%M:%S.%f')
             self.onBar(self.bar)
+
             self.bar = None
 
 
