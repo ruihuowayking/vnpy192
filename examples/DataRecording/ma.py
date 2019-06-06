@@ -7,7 +7,7 @@ import requests
 from pymongo import MongoClient
 
 from vnpy.trader.app.ctaStrategy.ctaBase import MINUTE_DB_NAME, TICK_DB_NAME
-from vnpy.trader.app.ctaStrategy.ctaTemplate import get_VolSize
+from vnpy.trader.vtUtility import get_VolSize
 from vnpy.trader.vtFunction import getJsonPath
 # 这里以商品期货为例
 FUTURES_URL = "http://stock2.finance.sina.com.cn/futures/api/json.php/IndexService.getInnerFuturesMiniKLine5m?symbol="

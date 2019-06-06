@@ -5,7 +5,7 @@
 '''
 
 from vnpy.trader.vtConstant import *
-from vnpy.trader.vtUtility import BarGenerator, ArrayManager 
+from vnpy.trader.vtUtility import BarGenerator, ArrayManager,get_CustSetting,get_VolSize 
 from vnpy.trader.vtObject import VtBarData 
 from vnpy.trader.vtFunction import getJsonPath 
 from .ctaBase import * 
@@ -14,6 +14,7 @@ import time,datetime
 
 import json,os,sys
 
+'''
 def get_CustSetting():
     settingFileName = 'custom_setting.json'
     settingfilePath = getJsonPath(settingFileName, __file__)
@@ -35,7 +36,9 @@ def get_VolSize():
         #print(f.read())
         dataContent = fileObj.read()
     vol_Size = json.loads(dataContent)   
-    return vol_Size          
+    return vol_Size   
+
+'''           
 ########################################################################
 class CtaTemplate(object):
     """CTA策略模板"""

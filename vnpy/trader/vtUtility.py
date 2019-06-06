@@ -5,7 +5,33 @@ import numpy as np
 import talib
 
 from vnpy.trader.vtObject import VtBarData
+from vnpy.trader.vtFunction import getJsonPath
+import time,datetime
+import json,os,sys
 
+def get_CustSetting():
+    settingFileName = 'custom_setting.json'
+    settingfilePath = getJsonPath(settingFileName, __file__)
+    #settingfilePath = os.path.join(sys.argv[0],settingFileName )    
+    custCfg = [] 
+    dataContent = ""
+    with open(settingfilePath, 'r') as fileObj:
+        #print(f.read())
+        dataContent = fileObj.read()
+    custCfg = json.loads(dataContent)   
+    return custCfg   
+
+def get_VolSize():
+    vol_Size = {}    
+    dataContent = ""
+    settingFileName = 'Symbol_volsize.json'
+    settingfilePath = getJsonPath(settingFileName, __file__)      
+    with open(settingfilePath, 'r') as fileObj:
+        #print(f.read())
+        dataContent = fileObj.read()
+    vol_Size = json.loads(dataContent)   
+    return vol_Size          
+ 
 ########################################################################
 class BarGenerator(object):
     """
