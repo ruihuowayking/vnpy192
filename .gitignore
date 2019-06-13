@@ -51,6 +51,8 @@ CMakeCache.txt
 CMakeFiles/
 build/cmake_install.cmake
 build/Makefile
+/vnpy/api/ctp/ctpapi/build/*
+vnpy/api/ib/ibapi/linux/
 
 # 目录
 .idea
