@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, time
 from pymongo import MongoClient
 
 from vnpy.trader.app.ctaStrategy.ctaBase import MINUTE_DB_NAME, TICK_DB_NAME
-
+import requests
 import pandas as pd
 # 这里以商品期货为例,Index Futures have problems
 MORNING_START = time(9, 0)
@@ -93,7 +93,65 @@ def runDataCleaning():
     print(outList)
     print(cntDF)
     print(u'统计完成')
+    return str(cntDF)
     
+corpid = 'ww4228ea82202b6f2b',
+corpsecret = ''
+agentid = 1000002
+# 报警通知联系人账号
+NOTICE_USER_LIST = "@all"
+class weixinClass(object):
+    def __init__(self):
+        self.token = self.get_token()
+
+    def get_token(self):
+        token_url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken'
+        values = {'corpid': corpid, 'corpsecret': corpsecret}
+        req = requests.get(token_url, values)
+        if req.status_code == 200:
+            data = json.loads(req.text)
+            if data.get('errcode') == 0:
+                print('get token OK')
+                return data["access_token"]
+ 
+            else:
+                print( data )
+        else:
+            print(req.text)
+        return ''
+ 
+    def send_msg(self, msg, to_user=NOTICE_USER_LIST):
+        send_msg_url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + self.token
+        now_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print(self.token)
+        if isinstance(msg, str):
+            msg = msg + '<br>发送时间:' + now_time
+        elif isinstance(msg, unicode):
+            msg = msg + u'<br>发送时间:' + now_time
+ 
+        data = {
+            "touser": to_user,
+            "msgtype":  "text",
+            "agentid":  agentid,
+            "text": {
+                    "content": msg
+                }
+            }
+        req = requests.post(send_msg_url, data=json.dumps(data))
+        if req.status_code == 200:
+            data = json.loads(req.text)
+            errcode = data.get('errcode')
+            # token过期或者过期，重新获取token并重新发送本条信息
+            if errcode in [41001, 42001]:
+                print('Send message False, to resend!')
+                self.token = self.get_token()
+                self.send_msg(msg)
+            if errcode == 0:
+                print('Send message OK')
+        else:
+            print("http_code: %s, error: %s" % (req.status_code, req.text))
 
 if __name__ == '__main__':
-    runDataCleaning()
+    lvout = runDataCleaning()
+    a = weixinClass()
+    a.send_msg(lvout)    

@@ -94,7 +94,7 @@ def fillMissingDailyData(dbName, collectionName, start,end,cfgdata,cfgMap):
         dateString = datetime.strftime(theBarDate,'%Y-%m-%d')
         searchItem = {'date':dateString}  
         searchResult = cl.find(searchItem)
-        if searchResult.count() < 4:  
+        if searchResult.count() < 4 and sampleData != None:  
             
             #insert open
             del sampleData["_id"]            
@@ -236,7 +236,6 @@ def runDataRefilling():
         
     for l in setting['bar']:
         symbol = l[0]
-        
         #fillMissingData(MINUTE_DB_NAME, symbol, start,volSize,symbolMap)
         fillMissingDailyData(MINUTE_DB_NAME, symbol, start,end,volSize,symbolMap)
     
