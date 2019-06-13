@@ -101,12 +101,12 @@ def fillMissingDailyData(dbName, collectionName, start,end,cfgdata,cfgMap):
             sampleData["volume"] = int(float(theBar[5])/4)
             sampleData["datetime"] = theBarDate
             print(theBarDate)
-            sampleData["high"] = theBar[2]
+            sampleData["high"] = float(theBar[2])
             sampleData["time"] = datetime.strftime(theBarDate,'%H:%M:%S')
             sampleData["date"] = datetime.strftime(theBarDate,'%Y%m%d')
-            sampleData["close"]= theBar[4] 
-            sampleData["open"]= theBar[1] 
-            sampleData["low"]= theBar[3]   
+            sampleData["close"]= float(theBar[4]) 
+            sampleData["open"]= float(theBar[1]) 
+            sampleData["low"]= float(theBar[3])   
             #print(sampleData)       
             insertResult = cl.insert_one(sampleData) 
 
@@ -115,12 +115,12 @@ def fillMissingDailyData(dbName, collectionName, start,end,cfgdata,cfgMap):
             del sampleData["_id"]            
             sampleData["volume"] = int(float(theBar[5])/4)
             sampleData["datetime"] = theBarDate
-            sampleData["high"] = theBar[2]
+            sampleData["high"] = float(theBar[2])
             sampleData["time"] = datetime.strftime(theBarDate,'%H:%M:%S')
             sampleData["date"] = datetime.strftime(theBarDate,'%Y%m%d')
-            sampleData["close"]= theBar[4] 
-            sampleData["open"]= theBar[1] 
-            sampleData["low"]= theBar[3]   
+            sampleData["close"]= float(theBar[4]) 
+            sampleData["open"]= float(theBar[1]) 
+            sampleData["low"]= float(theBar[3])   
             #print(sampleData)       
             insertResult = cl.insert_one(sampleData) 
 
@@ -129,12 +129,12 @@ def fillMissingDailyData(dbName, collectionName, start,end,cfgdata,cfgMap):
             del sampleData["_id"]            
             sampleData["volume"] = int(float(theBar[5])/4)
             sampleData["datetime"] = theBarDate
-            sampleData["high"] = theBar[2]
+            sampleData["high"] = float(theBar[2])
             sampleData["time"] = datetime.strftime(theBarDate,'%H:%M:%S')
             sampleData["date"] = datetime.strftime(theBarDate,'%Y%m%d')
-            sampleData["close"]= theBar[4] 
-            sampleData["open"]= theBar[1] 
-            sampleData["low"]= theBar[3]   
+            sampleData["close"]= float(theBar[4]) 
+            sampleData["open"]= float(theBar[1]) 
+            sampleData["low"]= float(theBar[3])   
             #print(sampleData)       
             insertResult = cl.insert_one(sampleData) 
             
@@ -143,12 +143,12 @@ def fillMissingDailyData(dbName, collectionName, start,end,cfgdata,cfgMap):
             del sampleData["_id"]            
             sampleData["volume"] = int(float(theBar[5])/4)
             sampleData["datetime"] = theBarDate
-            sampleData["high"] = theBar[2]
+            sampleData["high"] = float(theBar[2])
             sampleData["time"] = datetime.strftime(theBarDate,'%H:%M:%S')
             sampleData["date"] = datetime.strftime(theBarDate,'%Y%m%d')
-            sampleData["close"]= theBar[4] 
-            sampleData["open"]= theBar[1] 
-            sampleData["low"]= theBar[3]   
+            sampleData["close"]= float(theBar[4]) 
+            sampleData["open"]= float(theBar[1]) 
+            sampleData["low"]= float(theBar[3])   
             #print(sampleData)       
             insertResult = cl.insert_one(sampleData)   
             theBarDate = theBarDate + timedelta(minutes=1081)                      
@@ -203,12 +203,12 @@ def fillMissingData(dbName, collectionName, start,cfgdata,cfgMap):
             del sampleData["_id"]            
             sampleData["volume"] = int(float(theBar[5])/5)
             sampleData["datetime"] = barDatetime
-            sampleData["high"] = theBar[2]
+            sampleData["high"] = float(theBar[2])
             sampleData["time"] = theBar[0][11:]
             sampleData["date"] = datetime.strftime(barDatetime,'%Y%m%d')
-            sampleData["close"]= theBar[4] 
-            sampleData["open"]= theBar[1] 
-            sampleData["low"]= theBar[3]   
+            sampleData["close"]= float(theBar[4]) 
+            sampleData["open"]= float(theBar[1]) 
+            sampleData["low"]= float(theBar[3])   
             #print(sampleData)       
             insertResult = cl.insert_one(sampleData) 
             print("fill in data for:",theBar[0])  
