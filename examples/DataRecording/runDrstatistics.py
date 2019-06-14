@@ -17,7 +17,7 @@ MORNING_END = time(11, 30)
 AFTERNOON_START = time(13, 30)
 AFTERNOON_END = time(15, 0)
 NIGHT_START = time(21, 0)
-NIGHT_END = time(2, 30)
+NIGHT_END = time(2, 30) 
 
 
 #----------------------------------------------------------------------
@@ -64,7 +64,7 @@ def runDataCleaning():
     # 遍历执行清洗
     today = datetime.now()
     start = today   # 统计当天数据
-    start.replace(hour=0, minute=0, second=0, microsecond=0)
+    start = start.replace(hour=0, minute=0, second=0, microsecond=0)
     countInterval = 30
     intervalStart = today - timedelta(minutes = countInterval)  
     # 默认时间间隔
