@@ -42,10 +42,11 @@ def countData(dbName, collectionName, start,intervalStart):
         (AFTERNOON_START <= dt < AFTERNOON_END) or
         (dt >= NIGHT_START) or
         (dt < NIGHT_END)):
-        d = {'datetime':{'$gte':start}}         # 只过滤从start开始的数据
-        e = {'datetime':{'$gte':intervalStart}}         # 只过滤从start开始的数据
-        totalCnt  = cl.find(d).count()
-        deltaCnt  = cl.find(e).count()
+        pass #ignore, wrong code
+    d = {'datetime':{'$gte':start}}         # 只过滤从start开始的数据
+    e = {'datetime':{'$gte':intervalStart}}         # 只过滤从start开始的数据
+    totalCnt  = cl.find(d).count()
+    deltaCnt  = cl.find(e).count()
 
     
     print(u'计算完成，数据库：%s, 集合：%s,总数:%s,Delta:%s' %(dbName, collectionName,totalCnt,deltaCnt))
@@ -64,7 +65,8 @@ def runDataCleaning():
     # 遍历执行清洗
     today = datetime.now()
     start = today   # 统计当天数据
-    start = start.replace(hour=0, minute=0, second=0, microsecond=0)
+    start = start.replace(hour=0, minute=0, second=0, microsecond=0) 
+    start = start - timedelta(hours = 4)  
     countInterval = 30
     intervalStart = today - timedelta(minutes = countInterval)  
     # 默认时间间隔
@@ -100,10 +102,11 @@ corpsecret = ''
 agentid = 1000002
 # 报警通知联系人账号
 NOTICE_USER_LIST = "@all"
+
 class weixinClass(object):
     def __init__(self):
         self.token = self.get_token()
-
+        self.resendcnt = 0
     def get_token(self):
         token_url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken'
         values = {'corpid': corpid, 'corpsecret': corpsecret}
@@ -143,9 +146,12 @@ class weixinClass(object):
             errcode = data.get('errcode')
             # token过期或者过期，重新获取token并重新发送本条信息
             if errcode in [41001, 42001]:
-                print('Send message False, to resend!')
-                self.token = self.get_token()
-                self.send_msg(msg)
+                while self.resendcnt < 3:
+                    self.resendcnt+=1
+                    print('Send message False, to resend!')
+                    self.token = self.get_token()
+                    self.send_msg(msg)
+
             if errcode == 0:
                 print('Send message OK')
         else:
