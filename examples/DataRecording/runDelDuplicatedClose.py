@@ -97,7 +97,7 @@ def runDataChecking():
     end = start + timedelta(9)
     start.replace(hour=0, minute=0, second=0, microsecond=0)
     start = datetime.strptime('2019-03-13 00:00:00', '%Y-%m-%d %H:%M:%S')
-    end = datetime.strptime('2019-06-28 16:00:00', '%Y-%m-%d %H:%M:%S')
+    end = datetime.strptime('2019-07-01 16:00:00', '%Y-%m-%d %H:%M:%S')
         
     for l in setting['bar']:
         symbol = l[0]
