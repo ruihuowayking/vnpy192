@@ -67,7 +67,7 @@ def findRepeatData(dbName, collectionName, start,end,cfgdata,cfgMap):
     recDate = ""
     while tempDate < endDate:
         recDate = tempDate.strftime( '%Y%m%d' ) 
-        pipeline = {"$and":[{"date":recDate},{"time":{"$lte":"15:00:01.000000"}},{"time":{"$gte":"14:59:00"}}]}
+        pipeline = {"$and":[{"date":recDate},{"time":{"$lte":"15:01:00.000000"}},{"time":{"$gte":"14:59:00"}}]}
         
         #pprint.pprint(list(db.things.aggregate(pipeline)))
         closeDataCursor = cl.find(pipeline) 
@@ -95,9 +95,10 @@ def runDataChecking():
     today = datetime.now()
     start = today - timedelta(10)   # 清洗过去10天数据
     end = start + timedelta(9)
-    start.replace(hour=0, minute=0, second=0, microsecond=0)
-    start = datetime.strptime('2019-03-13 00:00:00', '%Y-%m-%d %H:%M:%S')
-    end = datetime.strptime('2019-07-01 16:00:00', '%Y-%m-%d %H:%M:%S')
+    start = start.replace(hour=0, minute=0, second=0, microsecond=0)
+    end = today.replace(hour=16, minute=0, second=0, microsecond=0)
+    #start = datetime.strptime('2019-03-13 00:00:00', '%Y-%m-%d %H:%M:%S')
+    #end = datetime.strptime('2019-07-01 16:00:00', '%Y-%m-%d %H:%M:%S')
         
     for l in setting['bar']:
         symbol = l[0]
