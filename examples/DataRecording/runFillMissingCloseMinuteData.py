@@ -46,114 +46,7 @@ def getDailyBarData(dataUrl):
     return r_lists
     #print('future_code,date,open,high,low,close,vol')
 
-def fillMissingDailyData(dbName, collectionName, start,end,cfgdata,cfgMap):
-    """
-    如果当日数据没有，从新浪抓取，补充开（9点）高，低收4根K线。
-    """
-    print(u'\n补充日线数据：%s, 集合：%s, 起始日：%s' %(dbName, collectionName, start))
-    
-    var_Symbol = ""
-    var_Symbol = var_Symbol.join(list(filter(lambda x: x.isalpha(),collectionName)))            
-
-    startDate = start.replace(hour=9, minute=0, second=0, microsecond=0)
-    endDate = end.replace(hour=15, minute=30, second=0, microsecond=0)
-    conMonth = collectionName[-3:]
-    if conMonth == '901':
-        return
-    contractCode = cfgMap[collectionName][0]
-    urlType = cfgMap[collectionName][1]
-    #minKLineNo = 0
-    dataUrl = ""
-    if urlType == "url2":
-        dataUrl = INDEX_DAYURL + contractCode
-        #minKLineNo = 240
-    else:
-        dataUrl = FUTURES_DAYURL + contractCode
         
-    dailyBar = getDailyBarData(dataUrl)
-    if dailyBar == None:
-        print("Cannot read data from Sina, check it!")
-        return
-    dailyBar.sort()
-    startString = datetime.strftime(startDate,'%Y-%m-%d %H:%M:%S') 
-    endString = datetime.strftime(endDate,'%Y-%m-%d %H:%M:%S') 
-    
-    mc = MongoClient('localhost', 27017)    # 创建MongoClient
-    cl = mc[dbName][collectionName]         # 获取数据集合 
-    sampleData = cl.find_one()
-    #del sampleData["_id"]
-    theBarDate = startDate
-    for theBar in dailyBar:
-        if theBar[0] < startString:
-            continue
-        if theBar[0] > endString:
-            continue
-        #barDatetime = datetime.strptime(theBar[0],'%Y-%m-%d %H:%M:%S')
-        if theBar[0][11:13] == '15':
-            continue
-        dateString = datetime.strftime(theBarDate,'%Y-%m-%d')
-        searchItem = {'date':dateString}  
-        searchResult = cl.find(searchItem)
-        if searchResult.count() < 120:  
-            
-            #insert open
-            del sampleData["_id"]            
-            sampleData["volume"] = int(float(theBar[5])/4)
-            sampleData["datetime"] = theBarDate
-            print(theBarDate)
-            sampleData["high"] = float(theBar[2])
-            sampleData["time"] = datetime.strftime(theBarDate,'%H:%M:%S')
-            sampleData["date"] = datetime.strftime(theBarDate,'%Y%m%d')
-            sampleData["close"]= float(theBar[4]) 
-            sampleData["open"]= float(theBar[1]) 
-            sampleData["low"]= float(theBar[3])   
-            #print(sampleData)       
-            insertResult = cl.insert_one(sampleData) 
-
-            #insert High
-            theBarDate = theBarDate + timedelta(hours=1)
-            del sampleData["_id"]            
-            sampleData["volume"] = int(float(theBar[5])/4)
-            sampleData["datetime"] = theBarDate
-            sampleData["high"] = float(theBar[2])
-            sampleData["time"] = datetime.strftime(theBarDate,'%H:%M:%S')
-            sampleData["date"] = datetime.strftime(theBarDate,'%Y%m%d')
-            sampleData["close"]= float(theBar[4]) 
-            sampleData["open"]= float(theBar[1]) 
-            sampleData["low"]= float(theBar[3])   
-            #print(sampleData)       
-            insertResult = cl.insert_one(sampleData) 
-
-            #insert Low
-            theBarDate = theBarDate + timedelta(hours=1)
-            del sampleData["_id"]            
-            sampleData["volume"] = int(float(theBar[5])/4)
-            sampleData["datetime"] = theBarDate
-            sampleData["high"] = float(theBar[2])
-            sampleData["time"] = datetime.strftime(theBarDate,'%H:%M:%S')
-            sampleData["date"] = datetime.strftime(theBarDate,'%Y%m%d')
-            sampleData["close"]= float(theBar[4]) 
-            sampleData["open"]= float(theBar[1]) 
-            sampleData["low"]= float(theBar[3])   
-            #print(sampleData)       
-            insertResult = cl.insert_one(sampleData) 
-            
-            #insert close
-            theBarDate = theBarDate + timedelta(minutes=239)
-            del sampleData["_id"]            
-            sampleData["volume"] = int(float(theBar[5])/4)
-            sampleData["datetime"] = theBarDate
-            sampleData["high"] = float(theBar[2])
-            sampleData["time"] = datetime.strftime(theBarDate,'%H:%M:%S')
-            sampleData["date"] = datetime.strftime(theBarDate,'%Y%m%d')
-            sampleData["close"]= float(theBar[4]) 
-            sampleData["open"]= float(theBar[1]) 
-            sampleData["low"]= float(theBar[3])   
-            #print(sampleData)       
-            insertResult = cl.insert_one(sampleData)   
-            theBarDate = theBarDate + timedelta(minutes=1081)                      
-            print("fill in data for:",dateString)  
-    print(u'\n补充数据完成：%s, 集合：%s, 起始日：%s' %(dbName, collectionName, start))             
 def fillMissingData(dbName, collectionName, start,cfgdata,cfgMap):
     """
     如果收盘数据,比如14点59数据没有，使用前一根K线的数据。
@@ -169,6 +62,11 @@ def fillMissingData(dbName, collectionName, start,cfgdata,cfgMap):
     conMonth = collectionName[-3:]
     if conMonth == '901':
         return
+
+    var_CloseTime = "14:59:00"            
+    var_CloseTime = cfgdata[var_Symbol][1] 
+    var_CloseTimeList =  var_CloseTime.split(":")       
+    
     contractCode = cfgMap[collectionName][0]
     urlType = cfgMap[collectionName][1]
     #minKLineNo = 0
@@ -194,9 +92,15 @@ def fillMissingData(dbName, collectionName, start,cfgdata,cfgMap):
         if theBar[0] < startString:
             continue
         barDatetime = datetime.strptime(theBar[0],'%Y-%m-%d %H:%M:%S')
-        if theBar[0][11:13] == '15':
-            #print(theBar[0])
-            continue
+        if  (var_Symbol == 'T' or var_Symbol == 'IF' or var_Symbol == 'IC' or var_Symbol =='IH'):
+        
+            if theBar[0][11:13] == '15' and theBar[0][14:16] == '15':
+                barDatetime = barDatetime + timedelta(minutes = -1)
+        else:
+            if theBar[0][11:13] == '15' and theBar[0][14:16] == '00':
+                barDatetime = barDatetime + timedelta(minutes = -1)
+
+        
         searchItem = {'datetime':barDatetime}  
         searchResult = cl.find_one(searchItem)
         if searchResult == None:  
@@ -204,7 +108,7 @@ def fillMissingData(dbName, collectionName, start,cfgdata,cfgMap):
             sampleData["volume"] = int(float(theBar[5])/5)
             sampleData["datetime"] = barDatetime
             sampleData["high"] = float(theBar[2])
-            sampleData["time"] = theBar[0][11:]
+            sampleData["time"] = datetime.strftime(barDatetime,'%H:%M:%S')
             sampleData["date"] = datetime.strftime(barDatetime,'%Y%m%d')
             sampleData["close"]= float(theBar[4]) 
             sampleData["open"]= float(theBar[1]) 

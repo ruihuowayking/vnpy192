@@ -26,7 +26,7 @@ def getSymbolMapping():
     symbolMap = json.loads(dataContent)   
     return symbolMap     
  
-def removeRepeat(repeatDt, mgClient):
+def removeRepeat(repeatDt, mgClient,var_CloseTime):
     
 
     try:
@@ -34,6 +34,10 @@ def removeRepeat(repeatDt, mgClient):
         for record in repeatDt:
             if record["time"]=="14:59:00" or record["time"]=="14:59:00.000" or record["time"]=="14:59:00.000000" :
                 continue
+            elif record["time"]=="15:14:00" or record["time"]=="115:14:00.000" or record["time"]=="15:14:00.000000" :
+                continue
+            elif record["time"] < var_CloseTime:
+                continue 
             else:
                 wCnt = mgClient.remove({'_id': record['_id']})
                 #WriteResult.nRemoved
@@ -56,6 +60,12 @@ def findRepeatData(dbName, collectionName, start,end,cfgdata,cfgMap):
     conMonth = collectionName[-3:]
     if conMonth == '901':
         return
+    
+    var_CloseTime = "14:59:00"            
+    var_CloseTime = cfgdata[var_Symbol][1] 
+    var_CloseTimeList =  var_CloseTime.split(":")   
+  
+    
     contractCode = cfgMap[collectionName][0]
     urlType = cfgMap[collectionName][1]
     startString = datetime.strftime(startDate,'%Y-%m-%d %H:%M:%S') 
@@ -67,13 +77,13 @@ def findRepeatData(dbName, collectionName, start,end,cfgdata,cfgMap):
     recDate = ""
     while tempDate < endDate:
         recDate = tempDate.strftime( '%Y%m%d' ) 
-        pipeline = {"$and":[{"date":recDate},{"time":{"$lte":"15:01:00.000000"}},{"time":{"$gte":"14:59:00"}}]}
+        pipeline = {"$and":[{"date":recDate},{"time":{"$lte":"15:16:00.000000"}},{"time":{"$gt":"14:59:00"}}]}
         
         #pprint.pprint(list(db.things.aggregate(pipeline)))
         closeDataCursor = cl.find(pipeline) 
         closeData = list(closeDataCursor[:])
-        if (len(closeData)>1):
-            removeRepeat(closeData,cl)
+        if (len(closeData)>0):
+            removeRepeat(closeData,cl,var_CloseTime)
         tempDate = tempDate + timedelta(1)
         
         

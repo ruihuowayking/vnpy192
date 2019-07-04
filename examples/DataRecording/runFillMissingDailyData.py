@@ -54,7 +54,7 @@ def fillMissingDailyData(dbName, collectionName, start,end,cfgdata,cfgMap):
     
     var_Symbol = ""
     var_Symbol = var_Symbol.join(list(filter(lambda x: x.isalpha(),collectionName)))            
-
+    
     startDate = start.replace(hour=9, minute=0, second=0, microsecond=0)
     endDate = end.replace(hour=15, minute=30, second=0, microsecond=0)
     conMonth = collectionName[-3:]
@@ -88,9 +88,9 @@ def fillMissingDailyData(dbName, collectionName, start,end,cfgdata,cfgMap):
             continue
         if theBar[0] > endString:
             continue
+
         #barDatetime = datetime.strptime(theBar[0],'%Y-%m-%d %H:%M:%S')
-        if theBar[0][11:13] == '15':
-            continue
+
         dateString = datetime.strftime(theBarDate,'%Y-%m-%d')
         searchItem = {'date':dateString}  
         searchResult = cl.find(searchItem)
@@ -140,6 +140,8 @@ def fillMissingDailyData(dbName, collectionName, start,end,cfgdata,cfgMap):
             
             #insert close
             theBarDate = theBarDate + timedelta(minutes=239)
+            if  (var_Symbol == 'T' or var_Symbol == 'IF' or var_Symbol == 'IC' or var_Symbol =='IH'):
+                theBarDate = theBarDate + timedelta(minutes=15)
             del sampleData["_id"]            
             sampleData["volume"] = int(float(theBar[5])/4)
             sampleData["datetime"] = theBarDate
@@ -151,7 +153,9 @@ def fillMissingDailyData(dbName, collectionName, start,end,cfgdata,cfgMap):
             sampleData["low"]= float(theBar[3])   
             #print(sampleData)       
             insertResult = cl.insert_one(sampleData)   
-            theBarDate = theBarDate + timedelta(minutes=1081)                      
+            theBarDate = theBarDate + timedelta(minutes=1081)   
+            if  (var_Symbol == 'T' or var_Symbol == 'IF' or var_Symbol == 'IC' or var_Symbol =='IH'):
+                theBarDate = theBarDate + timedelta(minutes=-15)                               
             print("fill in data for:",dateString)  
     print(u'\n补充数据完成：%s, 集合：%s, 起始日：%s' %(dbName, collectionName, start))             
 def fillMissingData(dbName, collectionName, start,cfgdata,cfgMap):
