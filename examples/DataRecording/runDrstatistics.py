@@ -97,8 +97,9 @@ def runDataCleaning():
     print(u'统计完成')
     return str(cntDF)
     
+from global_data_storage import global_Var_Wechat    
 corpid = 'ww4228ea82202b6f2b',
-corpsecret = ''
+corpsecret = global_Var_Wechat
 agentid = 1000002
 # 报警通知联系人账号
 NOTICE_USER_LIST = "@all"
