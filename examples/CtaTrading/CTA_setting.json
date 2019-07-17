@@ -63,6 +63,6 @@
         "name": "rb10_DT",
         "className": "DT_IntraDayCommonStrategy",
         "vtSymbol": "rb1910",
-        "strParams":[["unit",2],["p1",0.4],["p2",0.4],["p3",4],["p4",20],["p5",55]]
+        "strParams":[["unit",2],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
     }    
 ]
