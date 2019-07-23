@@ -108,7 +108,7 @@ def runDataCleaning():
     volSize = get_VolSize()    
     # 遍历执行清洗
     today = datetime.now()
-    start = today - timedelta(50)   # 清洗过去10天数据
+    start = today - timedelta(10)   # 清洗过去10天数据
     start.replace(hour=0, minute=0, second=0, microsecond=0)
     
     for l in setting['tick']:
