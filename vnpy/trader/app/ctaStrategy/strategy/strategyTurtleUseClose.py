@@ -97,7 +97,7 @@ class TurtleUseCloseStrategy(CtaTemplate):
         super(TurtleUseCloseStrategy, self).__init__(ctaEngine, setting) 
         
         self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar,vtSymbol=self.vtSymbol)
-        self.am = ArrayManager(max(self.longDays,self.shortDays,self.atrDays)+1)
+        #self.am = ArrayManager(max(self.longDays,self.shortDays,self.atrDays)+1)
         self.barList = []
         if 'strParams' in setting:
             self.params = setting['strParams']
@@ -156,6 +156,7 @@ class TurtleUseCloseStrategy(CtaTemplate):
         self.capConfig = 0.0
         self.onTradeCnt = 0
         self.bookTime = datetime.now()
+        self.am = ArrayManager(max(self.longDays,self.shortDays,self.atrDays)+1)        
     #----------------------------------------------------------------------
     def onInit(self):
         """初始化策略（必须由用户继承实现）"""
