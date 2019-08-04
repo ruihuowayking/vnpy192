@@ -332,10 +332,10 @@ class TurtleCommonStrategy(CtaTemplate):
         if self.pos > 0:
             #self.sell(self.longExit,self.fixedSize,stop)
             if  bar.close < self.longExit:
-                self.sell(bar.close-2,abs(self.pos))
+                self.sell(bar.close,abs(self.pos))
             elif bar.close > self.longEntry and self.longEntry > 0 :
                 self.onTradeCnt = 0
-                self.buy(bar.close+1,self.fixedSize)
+                self.buy(bar.close,self.fixedSize)
                 #self.bookTime = datetime.now()
                 
             else:
@@ -344,12 +344,12 @@ class TurtleCommonStrategy(CtaTemplate):
             #self.entryUnitNo = 0
             if bar.close > self.longEntry and self.longEntry > 0 :
                 self.onTradeCnt = 0
-                self.buy(bar.close+1,self.fixedSize)
+                self.buy(bar.close,self.fixedSize)
                 #self.bookTime = datetime.now()
                 #self.onTradeCnt = 0                
             elif bar.close < self.shortEntry and self.shortEntry > 0:
                 self.onTradeCnt = 0
-                self.short(bar.close -1, self.fixedSize)
+                self.short(bar.close , self.fixedSize)
                 #self.bookTime = datetime.now()
                 #self.onTradeCnt = 0                
             else:
@@ -357,11 +357,11 @@ class TurtleCommonStrategy(CtaTemplate):
         else:
             if bar.close < self.shortEntry and self.shortEntry > 0 :
                 self.onTradeCnt = 0
-                self.short(bar.close-1,self.fixedSize)
+                self.short(bar.close,self.fixedSize)
                 #self.bookTime = datetime.now()
                 #self.onTradeCnt = 0                
             elif bar.close > self.shortExit:
-                self.cover(bar.close+1,abs(self.pos))
+                self.cover(bar.close,abs(self.pos))
             else:
                 pass                        
 

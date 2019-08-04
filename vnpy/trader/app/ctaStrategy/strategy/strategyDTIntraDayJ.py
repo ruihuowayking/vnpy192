@@ -170,11 +170,11 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
                 if bar.close > self.longEntry :
                     #if not self.longEntered:
                         #self.buy(self.longEntry + 2, self.fixedSize)
-                        self.buy(bar.close+2,self.fixedSize)
+                        self.buy(bar.close,self.fixedSize)
                 elif bar.close < self.shortEntry:
                     #if not self.shortEntered:
                         #self.short(self.shortEntry - 2, self.fixedSize)
-                        self.short(bar.close-2,self.fixedSize)
+                        self.short(bar.close,self.fixedSize)
                 else:
                     pass
                 
@@ -186,11 +186,11 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
                 # 多头止损单
                 if bar.close < self.shortEntry:
                     #self.sell(self.shortEntry -2 , self.fixedSize)
-                    self.sell(bar.close-2,self.fixedSize)
+                    self.sell(bar.close,self.fixedSize)
                     # 空头开仓单
                     if not self.shortEntered:
                         #self.short(self.shortEntry -2 , self.fixedSize)
-                        self.short(bar.close-2,self.fixedSize)
+                        self.short(bar.close,self.fixedSize)
             # 持有空头仓位
             elif self.pos < 0:
                 self.shortEntered = True
@@ -198,11 +198,11 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
                 # 空头止损单
                 if bar.close > self.longEntry:
                     #self.cover(self.longEntry + 2, self.fixedSize)                
-                    self.cover(bar.close+2,self.fixedSize)
+                    self.cover(bar.close,self.fixedSize)
                      # 多头开仓单
                     if not self.longEntered:
                         #self.buy(self.longEntry + 2, self.fixedSize)
-                        self.buy(bar.close+2,self.fixedSize)
+                        self.buy(bar.close,self.fixedSize)
         # 收盘平仓 This will not execute
         else:
             if self.pos > 0:
