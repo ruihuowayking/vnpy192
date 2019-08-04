@@ -235,7 +235,7 @@ def runDataRefilling():
     start = today - timedelta(10)   # 清洗过去10天数据
     end = start + timedelta(9)
     start.replace(hour=0, minute=0, second=0, microsecond=0)
-    start = datetime.strptime('2019-04-24 00:00:00', '%Y-%m-%d %H:%M:%S')
+    start = datetime.strptime('2019-07-29 00:00:00', '%Y-%m-%d %H:%M:%S')
     end = datetime.strptime('2019-07-29 16:00:00', '%Y-%m-%d %H:%M:%S')
         
     for l in setting['bar']:

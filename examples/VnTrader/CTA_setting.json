@@ -1,29 +1,106 @@
 [
+         
     {
-        "name": "Turtle Test 3 Minutes System",
-        "className": "Turtle01Strategy1M",
-        "vtSymbol": "rb1901"
+        "name": "ma09_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "MA909",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    },
+
+
+    {
+        "name": "pp09_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "pp1909",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    },  
+    {
+        "name": "hc10_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "hc1910",
+        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    },  
+    {
+        "name": "i09_TurtleCommon",
+        "className": "TurtleCommonStrategy",
+        "vtSymbol": "i1909",
+        "strParams":[["unit",1],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
+    }, 
+    {
+        "name": "i09_DT",
+        "className": "DT_IntraDayCommonStrategy",
+        "vtSymbol": "i1909",
+        "strParams":[["unit",2],["p1",1.0],["p2",1.2],["p3",2],["p4",20],["p5",55]]
     },
     {
-        "name": "DT Darchart",
-        "className": "DualThrust_IntraDayStrategy",
-        "vtSymbol": "rb1901"
+        "name": "AP10_DT",
+        "className": "DT_IntraDayCommonStrategy",
+        "vtSymbol": "AP910",
+        "strParams":[["unit",1],["p1",0.5],["p2",0.6],["p3",6],["p4",20],["p5",55]]
+    },          
+    {
+        "name": "T09_DT",
+        "className": "DT_IntraDayCommonStrategy",
+        "vtSymbol": "T1909",
+        "strParams":[["unit",1],["p1",0.5],["p2",0.6],["p3",6],["p4",10],["p5",26]]
+    },      
+    {
+        "name": "Daliang J Dual Thrust DayChart System",
+        "className": "JDualThrust_IntraDayStrategy",
+        "vtSymbol": "j1909"
     },
     {
-        "name": "DT Darchart Test",
-        "className": "DualThrust_IntraDay_Test_Strategy",
-        "vtSymbol": "rb1901"
+        "name": "rb10_TurtleClose",
+        "className": "TurtleUseCloseStrategy",
+        "vtSymbol": "rb1910",
+        "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
+    },
+    {
+        "name": "hc01_TurtleClose",
+        "className": "TurtleUseCloseStrategy",
+        "vtSymbol": "hc2001",
+        "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },    
     {
-        "name": "Turtle Short Time system",
-        "className": "Turtle01Strategy",
-        "vtSymbol": "rb1901"
-    },
+        "name": "i09_TurtleClose",
+        "className": "TurtleUseCloseStrategy",
+        "vtSymbol": "i1909",
+        "strParams":[["unit",1],["p1",22],["p2",22],["p3",11],["p4",11],["p5",55]]        
+    },  
     {
-        "name": "Test Open Close",  
-        "className": "TestCloseStrategy",
-        "vtSymbol": "rb1901"
-    }     
-    
-       
+        "name": "ta09_TurtleClose",
+        "className": "TurtleUseCloseStrategy",
+        "vtSymbol": "TA909",
+        "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
+    },  
+    {
+        "name": "ma01_TurtleClose",
+        "className": "TurtleUseCloseStrategy",
+        "vtSymbol": "MA001",
+        "strParams":[["unit",2],["p1",22],["p2",22],["p3",11],["p4",11],["p5",55]]        
+    }, 
+    {
+        "name": "pp09_TurtleClose",
+        "className": "TurtleUseCloseStrategy",
+        "vtSymbol": "pp2001",
+        "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
+    },    
+    {
+        "name": "SF09_TurtleClose",
+        "className": "TurtleUseCloseStrategy",
+        "vtSymbol": "SF909",
+        "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
+    },             
+    {
+        "name": "eg09_DT",
+        "className": "DT_IntraDayCommonStrategy",
+        "vtSymbol": "eg1909",
+        "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
+    },    
+    {
+        "name": "rb10_DT",
+        "className": "DT_IntraDayCommonStrategy",
+        "vtSymbol": "rb1910",
+        "strParams":[["unit",2],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
+    }    
 ]
