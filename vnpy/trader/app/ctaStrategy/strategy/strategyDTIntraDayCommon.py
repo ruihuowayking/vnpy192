@@ -63,9 +63,10 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
                'longEntry',
                'shortEntry',
                'exitTime'] 
-    
+    longEntry1 = 0
+    shortEntry1 = 0
     # 同步列表，保存了需要保存到数据库的变量名称
-    syncList = ['pos','range','longEntry','shortEntry']    
+    syncList = ['pos','range','longEntry1','shortEntry1']    
 
     #----------------------------------------------------------------------
     def __init__(self, ctaEngine, setting):
@@ -75,6 +76,8 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
         self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar)
         self.am = ArrayManager()
         self.barList = []
+        self.longEntry1 = 0
+        self.shortEntry1 = 0        
         # Read Parameters from Setting files
         if 'strParams' in setting:
             self.params = setting['strParams']
