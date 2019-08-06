@@ -5,29 +5,9 @@
         "className": "TurtleCommonStrategy",
         "vtSymbol": "MA909",
         "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
-    },
-
-
-    {
-        "name": "pp09_TurtleCommon",
-        "className": "TurtleCommonStrategy",
-        "vtSymbol": "pp1909",
-        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
     },  
     {
-        "name": "hc10_TurtleCommon",
-        "className": "TurtleCommonStrategy",
-        "vtSymbol": "hc1910",
-        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
-    },  
-    {
-        "name": "i09_DT",
-        "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "i1909",
-        "strParams":[["unit",1],["p1",1.0],["p2",1.2],["p3",2],["p4",20],["p5",55]]
-    },
-    {
-        "name": "i01_DT",
+        "name": "i_DT",
         "className": "DT_IntraDayCommonStrategy",
         "vtSymbol": "i2001",
         "strParams":[["unit",1],["p1",1.0],["p2",1.2],["p3",2],["p4",20],["p5",55]]
@@ -47,7 +27,7 @@
     {
         "name": "Daliang J Dual Thrust DayChart System",
         "className": "JDualThrust_IntraDayStrategy",
-        "vtSymbol": "j1909"
+        "vtSymbol": "j2001"
     },
     {
         "name": "rb10_TurtleClose",
@@ -70,7 +50,7 @@
     {
         "name": "ta09_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "TA909",
+        "vtSymbol": "TA001",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },  
     {
@@ -92,9 +72,9 @@
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },             
     {
-        "name": "eg09_DT",
+        "name": "eg_DT",
         "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "eg1909",
+        "vtSymbol": "eg2001",
         "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
     },    
     {
