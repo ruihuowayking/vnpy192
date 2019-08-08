@@ -1,11 +1,5 @@
 [
-         
-    {
-        "name": "ma09_TurtleCommon",
-        "className": "TurtleCommonStrategy",
-        "vtSymbol": "MA909",
-        "strParams":[["unit",2],["p1",20],["p2",20],["p3",10],["p4",10],["p5",55]]        
-    },  
+
     {
         "name": "i_DT",
         "className": "DT_IntraDayCommonStrategy",
