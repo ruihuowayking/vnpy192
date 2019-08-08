@@ -59,7 +59,7 @@ class TestLogOrderStrategy(CtaTemplate):
         self.writeCtaLog(u'%s策略初始化' %self.name)
     
         # 载入历史数据，并采用回放计算的方式初始化策略数值
-        initData = self.loadBar(self.initDays)
+        initData = self.loadBar(10)
         for bar in initData:
             self.onBar(bar)
 
