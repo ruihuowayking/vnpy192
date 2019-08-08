@@ -1,4 +1,9 @@
 [
+    {
+        "name": "rb_testlog",
+        "className": "TestLogOrderStrategy",
+        "vtSymbol": "rb1910"        
+    },
          
     {
         "name": "ma09_TurtleCommon",
