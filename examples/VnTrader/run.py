@@ -26,10 +26,10 @@ from vnpy.trader.uiMainWindow import MainWindow
 
 # 加载底层接口
 from vnpy.trader.gateway import (
-    #ctpGateway, 
+    ctpGateway, 
     #ctptestGateway,
-    miniGateway,
-    minitestGateway,
+    #miniGateway,
+    #minitestGateway,
     ibGateway, 
     huobiGateway, 
 )
@@ -59,10 +59,10 @@ def main():
     me = MainEngine(ee)
 
     # 添加交易接口
-    # me.addGateway(ctpGateway)
+    me.addGateway(ctpGateway)
     # me.addGateway(ctptestGateway)
     # me.addGateway(miniGateway)
-    me.addGateway(minitestGateway)
+    #me.addGateway(minitestGateway)
     me.addGateway(ibGateway)
     me.addGateway(huobiGateway)
 
