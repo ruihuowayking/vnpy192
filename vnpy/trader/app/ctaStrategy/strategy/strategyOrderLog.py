@@ -49,7 +49,7 @@ class TestLogOrderStrategy(CtaTemplate):
         self.am = ArrayManager()
         self.barList = []
         self.flipcoil = 0 
-        self.timeinterval =  5
+        self.timeinterval =  3
         self.hasorder = False
         self.countdown = self.timeinterval
                 
@@ -90,6 +90,9 @@ class TestLogOrderStrategy(CtaTemplate):
     def onBar(self, bar):
         """收到Bar推送（必须由用户继承实现）"""
         # 撤销之前发出的尚未成交的委托（包括限价单和停止单）
+        if self.countdown > 0:
+            self.countdown -= 1
+            return
         self.cancelAll()
 
         self.bg.updateBar(bar)
@@ -102,9 +105,7 @@ class TestLogOrderStrategy(CtaTemplate):
             self.barList.pop(0)
         lastBar = self.barList[-2]
         
-        if self.countdown > 0:
-            self.countdown -= 1
-            return
+
         
         self.flipcoil = random.random() 
         orderqty = [1,2,3]
@@ -132,12 +133,12 @@ class TestLogOrderStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def onTrade(self, trade):
         # 发出状态更新事件
-        logtext = self.name + "," + self.vtSymbol
-        logtext = logtext + ","+trade.date
-        logtext = logtext + "," +trade.datetime
+        #logtext = logtext + ","+trade.date
+        #logtext = logtext + "," +trade.datetime
         logtext = logtext + "," + trade.offset        
         logtext = logtext + "," + trade.direction
-        logtext = logtext + "," + trade.volume
+        logtext = logtext + "," + str(trade.volume)
+        logtext = logtext + "," + str(trade.price) 
         self.writeCtaLog(logtext)
         self.putEvent()
 
