@@ -15,7 +15,7 @@
     {
         "name": "T09_DT",
         "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "T1909",
+        "vtSymbol": "T1912",
         "strParams":[["unit",1],["p1",0.5],["p2",0.6],["p3",6],["p4",10],["p5",26]]
     },      
     {
