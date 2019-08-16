@@ -10,7 +10,7 @@ from vnpy.trader.vtObject import VtBarData
 from vnpy.trader.vtConstant import EMPTY_STRING
 from vnpy.trader.app.ctaStrategy.ctaTemplate import CtaTemplate, BarGenerator, ArrayManager
 from sqlalchemy.sql.expression import false
-
+from vnpy.trader.app.LeonOrderLog.leonlogengine import persisttrade
 
 ########################################################################
 class JDualThrust_IntraDayStrategy(CtaTemplate):
@@ -226,6 +226,7 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def onTrade(self, trade):
         # 发出状态更新事件
+        persisttrade(self.vtSymbol,self.className ,trade)        
         self.putEvent()
 
     #----------------------------------------------------------------------

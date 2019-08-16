@@ -14,6 +14,7 @@ from vnpy.trader.vtConstant import (DIRECTION_LONG, DIRECTION_SHORT,
 from vnpy.trader.app.ctaStrategy.ctaTemplate import CtaTemplate, BarGenerator , ArrayManager
 from vnpy.trader.language.chinese.constant import OFFSET_CLOSETODAY
 from bokeh.themes import default
+from vnpy.trader.app.LeonOrderLog.leonlogengine import persisttrade
 
 
 
@@ -414,6 +415,8 @@ class TurtleCommonStrategy(CtaTemplate):
             self.entryDirection = OFFSET_CLOSE            
         else:
             pass
+        
+        persisttrade(self.vtSymbol,self.className ,trade)
         self.putEvent()
 
     #----------------------------------------------------------------------

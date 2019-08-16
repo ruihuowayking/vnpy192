@@ -1,10 +1,31 @@
 # encoding: UTF-8
 from __future__ import print_function
+from vnpy.trader.vtConstant import (DIRECTION_LONG, DIRECTION_SHORT,
+                                    OFFSET_OPEN, OFFSET_CLOSE,
+                                    STATUS_ALLTRADED, STATUS_CANCELLED, STATUS_REJECTED) 
 import sqlite3
 import time
+import datetime
 #use file db to store log first
 #change to memory db later and do the sync between memory and file
 
+def persisttrade(vtsymbol,strname,tradedata):
+    
+    cdate = datetime.date.today()
+    slip = 0 # do not count slip by now, add later
+    exid = ""
+    contract = vtsymbol
+    entryprice = tradedata.price
+    orderofset = tradedata.offset
+    orddir = tradedata.direction
+    qty = tradedata.volume
+    strname = strname
+    ctime = datetime.datetime.now()
+        
+    rm1 = ""
+    rm2 = ""
+    orderdata = (cdate,exid,contract,entryprice,orderofset,orddir,qty,strname,ctime,rm1,rm2)
+    insertorder(orderdata)
 def insertorder(orderdata):
     insertsql = "INSERT INTO tradeorders "
     insertsql = insertsql + "(orderdate,exchangeid,contract,entryprice,"
@@ -30,7 +51,7 @@ def insertorder(orderdata):
             conn.commit()
 
     except:
-        print("Re try Exception!")
+        print("Retry Exception!")
         print(orderdata)  
     c.close()
     conn.close()    

@@ -11,7 +11,7 @@ from vnpy.trader.vtConstant import EMPTY_STRING
 from vnpy.trader.app.ctaStrategy.ctaTemplate import CtaTemplate, BarGenerator, ArrayManager
 from sqlalchemy.sql.expression import false
 import random
-
+from vnpy.trader.app.LeonOrderLog.leonlogengine import persisttrade
 
 ########################################################################
 class TestLogOrderStrategy(CtaTemplate):
@@ -135,11 +135,13 @@ class TestLogOrderStrategy(CtaTemplate):
         # 发出状态更新事件
         #logtext = logtext + ","+trade.date
         #logtext = logtext + "," +trade.datetime
+        logtext = ""
         logtext = logtext + "," + trade.offset        
         logtext = logtext + "," + trade.direction
         logtext = logtext + "," + str(trade.volume)
         logtext = logtext + "," + str(trade.price) 
         self.writeCtaLog(logtext)
+        persisttrade(self.vtSymbol,self.className ,trade)        
         self.putEvent()
 
     #----------------------------------------------------------------------

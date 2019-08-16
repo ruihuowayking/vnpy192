@@ -291,6 +291,14 @@ class CtaEngine(AppEngine):
             if tick.time[6:8] == '58':            
                 self.writeCtaLog("ignore data at 21:00 and 21:01 and 21:02")
             return
+
+        #ignore tick data when CTP is 21:00 and 21:01 and 21:02
+        if (tick.time[:2] == '09' and (tick.time[3:5]=='14' or tick.time[3:5]=='15' or tick.time[3:5]=='16')):
+            if vtSymbol[0:2] == "T1" or vtSymbol[0:2] == "T2" or vtSymbol[0:2] == "TS" or vtSymbol[0:2] == "TF" or vtSymbol[0:2] == "IF" or vtSymbol[0:2] == "IC" or vtSymbol[0:2] == "IH":         
+                if tick.time[6:8] == '58': 
+                    self.writeDrLog("ignore data at 09:14 15 16 for zhongjinsuo")
+                return
+
         
         # 收到tick行情后，先处理本地停止单（检查是否要立即发出）
         self.processStopOrder(tick)
