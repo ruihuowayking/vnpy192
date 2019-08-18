@@ -51,9 +51,20 @@ CMakeCache.txt
 CMakeFiles/
 build/cmake_install.cmake
 build/Makefile
-/vnpy/api/ctp/ctpapi/build/*
+/vnpy/api/ctp/ctpapi/build/
 vnpy/api/ib/ibapi/linux/
-
+vnpy/api/ib/ibapi/linux/build/
+vnpy/api/ctp/*.so
+vnpy/api/ib/vnib.so
+vnpy/api/lts/vnltsmd/test/
+vnpy/api/lts/vnltsqry/test/
+vnpy/api/lts/vnltstd/test/
+vnpy/api/xtp/*.so
+examples/VnTrader/temp/
+vnpy/api/lts/vnltsqry/test/
+vnpy/api/lts/vnltstd/test/
+vnpy/api/xtp/*.so
+examples/CtaTrading/temp/
 # 目录
 .idea
 .vscode
@@ -82,5 +93,8 @@ examples/VnTrader/CTP_connect.json
 examples/VnTrader/CTP_connect_backup.json
 # setup.py install 临时文件
 dist
+vnpy/api/xtp/*.so
+vnpy/api/lts/*.so
+vnpy/api/ib/ibapi/linux/build/*
 *.egg
 *.egg-info
