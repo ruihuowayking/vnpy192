@@ -33,7 +33,7 @@ def insertorder(orderdata):
     insertsql = insertsql + "ordertime,remark1,remark2 ) VALUES  " 
         
     insertsql = insertsql + "(?,?,?,?,?,?,?,?,?,?,?)"    
-    conn = sqlite3.connect('/home/root/sqllitedb/tradelog_vnpy.db')
+    conn = sqlite3.connect('/root/sqllitedb/tradelog_vnpy.db')
     c = conn.cursor()    
     try:
 
