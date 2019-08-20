@@ -42,27 +42,27 @@
         "strParams":[["unit",1],["p1",22],["p2",22],["p3",11],["p4",11],["p5",55]]        
     },  
     {
-        "name": "ta09_TurtleClose",
+        "name": "ta_TurtleClose",
         "className": "TurtleUseCloseStrategy",
         "vtSymbol": "TA001",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },  
     {
-        "name": "ma01_TurtleClose",
+        "name": "ma_TurtleClose",
         "className": "TurtleUseCloseStrategy",
         "vtSymbol": "MA001",
         "strParams":[["unit",2],["p1",22],["p2",22],["p3",11],["p4",11],["p5",55]]        
     }, 
     {
-        "name": "pp09_TurtleClose",
+        "name": "pp_TurtleClose",
         "className": "TurtleUseCloseStrategy",
         "vtSymbol": "pp2001",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },    
     {
-        "name": "SF09_TurtleClose",
+        "name": "SF_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "SF909",
+        "vtSymbol": "SF001",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },             
     {
