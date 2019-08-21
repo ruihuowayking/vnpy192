@@ -26,7 +26,7 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
     initDays = 30 # original value is 10
     rangeDays = 5
     countdown = 0
-
+    initcd = 10
     # 策略变量
     barList = []                # K线对象的列表
 
@@ -75,6 +75,7 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
         self.am = ArrayManager()
         self.barList = []
         self.countdown = 0
+        self.initcd = 10
 
     #----------------------------------------------------------------------
     def onInit(self):
@@ -128,9 +129,11 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
         # if there is open order, wait it to commit, do not cancel and send new order
         # Once order taken no matter cover or opposit open, reset countdown
         # very few case, there will have cover or open not complete, manually operate.
-        if self.countdown > 0:
-            self.countdown = self.countdown -1
-            return
+        # if close is approach, ignore this and just cancel old and send new order
+        if bar.datetime.hour == 14 and bar.datetime.minute < 30: 
+            if self.countdown > 0:
+                self.countdown = self.countdown -1
+                return
         
         # 撤销之前发出的尚未成交的委托（包括限价单和停止单）
         
@@ -182,12 +185,12 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
                     #if not self.longEntered:
                         #self.buy(self.longEntry + 2, self.fixedSize)
                         self.buy(bar.close,self.fixedSize)
-                        self.countdown = 10
+                        self.countdown = self.initcd
                 elif bar.close < self.shortEntry:
                     #if not self.shortEntered:
                         #self.short(self.shortEntry - 2, self.fixedSize)
                         self.short(bar.close,self.fixedSize)
-                        self.countdown = 10
+                        self.countdown = self.initcd
                 else:
                     pass
                 
@@ -200,7 +203,7 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
                 if bar.close < self.shortEntry:
                     #self.sell(self.shortEntry -2 , self.fixedSize)
                     self.sell(bar.close,self.fixedSize)
-                    self.countdown = 10
+                    self.countdown = self.initcd
                     # 空头开仓单
                     if not self.shortEntered:
                         #self.short(self.shortEntry -2 , self.fixedSize)
@@ -212,7 +215,7 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
                 # 空头止损单
                 if bar.close > self.longEntry:
                     #self.cover(self.longEntry + 2, self.fixedSize)
-                    self.countdown = 10                
+                    self.countdown = self.initcd                
                     self.cover(bar.close,self.fixedSize)
                      # 多头开仓单
                     if not self.longEntered:

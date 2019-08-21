@@ -52,6 +52,7 @@ class TestLogOrderStrategy(CtaTemplate):
         self.timeinterval =  3
         self.hasorder = False
         self.countdown = self.timeinterval
+        self.orderentred = False
                 
     #----------------------------------------------------------------------
     def onInit(self):
@@ -90,10 +91,13 @@ class TestLogOrderStrategy(CtaTemplate):
     def onBar(self, bar):
         """收到Bar推送（必须由用户继承实现）"""
         # 撤销之前发出的尚未成交的委托（包括限价单和停止单）
-        if self.countdown > 0:
-            self.countdown -= 1
-            return
+        
+        if bar.datetime.hour == 14 and bar.datetime.minute < 30:            
+            if self.countdown > 0:
+                self.countdown -= 1
+                return
         self.cancelAll()
+        
 
         self.bg.updateBar(bar)
     # 计算指标数值
@@ -108,17 +112,27 @@ class TestLogOrderStrategy(CtaTemplate):
 
         
         self.flipcoil = random.random() 
-        orderqty = [1,2,3]
+        orderqty = [2,2,2]
         if self.pos == 0:
             if self.flipcoil > 0.5:
                 self.buy(bar.close,random.choice(orderqty))
+                self.countdown = self.timeinterval
             else:
                 self.short(bar.close,random.choice(orderqty))
+                self.countdown = self.timeinterval
         elif self.pos > 0:
-            self.sell(bar.close,self.pos)
+            if self.flipcoil < 0.5:
+                self.sell(bar.close,self.pos)
+                self.countdown = self.timeinterval
+                self.short(bar.close,2)
+                    
+                    
         else:
-            self.cover(bar.close,abs(self.pos))
-        self.countdown = self.timeinterval
+            if self.flipcoil > 0.5:
+                self.cover(bar.close,abs(self.pos))
+                self.countdown = self.timeinterval
+                self.buy(bar.close,2)
+        
             
             
             
@@ -141,7 +155,8 @@ class TestLogOrderStrategy(CtaTemplate):
         logtext = logtext + "," + str(trade.volume)
         logtext = logtext + "," + str(trade.price) 
         self.writeCtaLog(logtext)
-        persisttrade(self.vtSymbol,self.className ,trade)        
+        persisttrade(self.vtSymbol,self.className ,trade)     
+           
         self.putEvent()
 
     #----------------------------------------------------------------------
