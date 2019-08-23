@@ -10,12 +10,12 @@ from vnpy.trader.vtObject import VtBarData
 from vnpy.trader.vtConstant import EMPTY_STRING
 from vnpy.trader.app.ctaStrategy.ctaTemplate import CtaTemplate, BarGenerator, ArrayManager
 from sqlalchemy.sql.expression import false
-
+from vnpy.trader.app.LeonOrderLog.leonlogengine import persisttrade
 
 ########################################################################
-class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
+class JDualThrust_IntraDayStrategy(CtaTemplate):
     """DualThrust交易策略"""
-    className = 'JDualThrust_IntraDay_DevStrategy'
+    className = 'JDualThrust_IntraDayStrategy'
     author = u'Leon Zhao'
 
     # 策略参数
@@ -26,7 +26,8 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
     initDays = 30 # original value is 10
     rangeDays = 5
     countdown = 0
-    initcd = 10
+    timeinterval = 0
+
     # 策略变量
     barList = []                # K线对象的列表
 
@@ -69,13 +70,13 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def __init__(self, ctaEngine, setting):
         """Constructor"""
-        super(JDualThrust_IntraDay_DevStrategy, self).__init__(ctaEngine, setting) 
+        super(JDualThrust_IntraDayStrategy, self).__init__(ctaEngine, setting) 
         
         self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar)
         self.am = ArrayManager()
         self.barList = []
+        self.timeinterval = 4
         self.countdown = 0
-        self.initcd = 10
 
     #----------------------------------------------------------------------
     def onInit(self):
@@ -87,6 +88,7 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
         for bar in initData:
             self.onBar(bar)
 
+        self.countdown = 0
         self.putEvent()
 
     #----------------------------------------------------------------------
@@ -125,18 +127,13 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def onBar(self, bar):
         """收到Bar推送（必须由用户继承实现）"""
-        
-        # if there is open order, wait it to commit, do not cancel and send new order
-        # Once order taken no matter cover or opposit open, reset countdown
-        # very few case, there will have cover or open not complete, manually operate.
-        # if close is approach, ignore this and just cancel old and send new order
-        if bar.datetime.hour == 14 and bar.datetime.minute < 30: 
-            if self.countdown > 0:
-                self.countdown = self.countdown -1
-                return
-        
         # 撤销之前发出的尚未成交的委托（包括限价单和停止单）
         
+        if (bar.datetime.hour < 14 or (bar.datetime.hour == 14 and bar.datetime.minute < 40)):            
+            if self.countdown > 0:
+                self.countdown = self.countdown - 1
+                #print(self.countdown)
+                return        
         self.cancelAll()
 
         self.bg.updateBar(bar)
@@ -185,12 +182,12 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
                     #if not self.longEntered:
                         #self.buy(self.longEntry + 2, self.fixedSize)
                         self.buy(bar.close,self.fixedSize)
-                        self.countdown = self.initcd
+                        self.countdown = self.timeinterval
                 elif bar.close < self.shortEntry:
                     #if not self.shortEntered:
                         #self.short(self.shortEntry - 2, self.fixedSize)
                         self.short(bar.close,self.fixedSize)
-                        self.countdown = self.initcd
+                        self.countdown = self.timeinterval
                 else:
                     pass
                 
@@ -203,7 +200,7 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
                 if bar.close < self.shortEntry:
                     #self.sell(self.shortEntry -2 , self.fixedSize)
                     self.sell(bar.close,self.fixedSize)
-                    self.countdown = self.initcd
+                    self.countdown = self.timeinterval
                     # 空头开仓单
                     if not self.shortEntered:
                         #self.short(self.shortEntry -2 , self.fixedSize)
@@ -214,9 +211,9 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
                 self.longEntered = False
                 # 空头止损单
                 if bar.close > self.longEntry:
-                    #self.cover(self.longEntry + 2, self.fixedSize)
-                    self.countdown = self.initcd                
+                    #self.cover(self.longEntry + 2, self.fixedSize)                
                     self.cover(bar.close,self.fixedSize)
+                    self.countdown = self.timeinterval
                      # 多头开仓单
                     if not self.longEntered:
                         #self.buy(self.longEntry + 2, self.fixedSize)
@@ -244,6 +241,7 @@ class JDualThrust_IntraDay_DevStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def onTrade(self, trade):
         # 发出状态更新事件
+        persisttrade(self.vtSymbol,self.className ,trade)        
         self.putEvent()
 
     #----------------------------------------------------------------------

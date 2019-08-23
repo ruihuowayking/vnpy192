@@ -49,7 +49,7 @@ class TestLogOrderStrategy(CtaTemplate):
         self.am = ArrayManager()
         self.barList = []
         self.flipcoil = 0 
-        self.timeinterval =  2
+        self.timeinterval =  3
         self.hasorder = False
         self.countdown = 0
         self.orderentred = False
@@ -63,7 +63,7 @@ class TestLogOrderStrategy(CtaTemplate):
         initData = self.loadBar(10)
         for bar in initData:
             self.onBar(bar)
-
+        self.countdown = 0
         self.putEvent()
 
     #----------------------------------------------------------------------
@@ -92,7 +92,7 @@ class TestLogOrderStrategy(CtaTemplate):
         """收到Bar推送（必须由用户继承实现）"""
         # 撤销之前发出的尚未成交的委托（包括限价单和停止单）
         
-        if bar.datetime.hour == 14 and bar.datetime.minute < 59:            
+        if (bar.datetime.hour < 14 or (bar.datetime.hour == 14 and bar.datetime.minute < 40)):            
             if self.countdown > 0:
                 self.countdown = self.countdown - 1
                 print(self.countdown)
@@ -137,6 +137,7 @@ class TestLogOrderStrategy(CtaTemplate):
             
             
             
+        print(self.countdown)
         # 发出状态更新事件
         self.putEvent()
 

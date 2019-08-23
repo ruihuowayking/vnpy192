@@ -275,7 +275,7 @@ class CtaEngine(AppEngine):
         tick = event.dict_['data']
         tick = copy(tick)
 
-
+        vtSymbol = tick.vtSymbol
         #ignore tick data when CTP is 20:59 or 08:59
         if  (tick.time[:2] == '08' or tick.time[:2]=='20'):
             if tick.time[6:8] == '58':
@@ -294,9 +294,9 @@ class CtaEngine(AppEngine):
 
         #ignore tick data when CTP is 21:00 and 21:01 and 21:02
         if (tick.time[:2] == '09' and (tick.time[3:5]=='14' or tick.time[3:5]=='15' or tick.time[3:5]=='16')):
-            if tick.vtSymbol[0:2] == "T1" or tick.vtSymbol[0:2] == "T2" or tick.vtSymbol[0:2] == "TS" or tick.vtSymbol[0:2] == "TF" or tick.vtSymbol[0:2] == "IF" or tick.vtSymbol[0:2] == "IC" or tick.vtSymbol[0:2] == "IH":         
+            if vtSymbol[0:2] == "T1" or vtSymbol[0:2] == "T2" or vtSymbol[0:2] == "TS" or vtSymbol[0:2] == "TF" or vtSymbol[0:2] == "IF" or vtSymbol[0:2] == "IC" or vtSymbol[0:2] == "IH":         
                 if tick.time[6:8] == '58': 
-                    self.writeDrLog("ignore data at 09:14 15 16 for zhongjinsuo")
+                    self.writeCtaLog("ignore data at 09:14 15 16 for zhongjinsuo")
                 return
 
         

@@ -45,8 +45,12 @@ def cleanData(dbName, collectionName, start):
             (dt < NIGHT_END)):
             cleanRequired = False
             
-        if (data['time']=="15:14:00.000000" or data['time']=="15:14:00" )and (collectionName[:2] == 'T1' or collectionName[:2] == 'T2' or collectionName[:2] == 'IF' or collectionName[:2] == 'IC' or collectionName[:2] == 'IH'):
-            cleanRequired = False
+        if (collectionName[:2] == 'T1' or collectionName[:2] == 'T2' or collectionName[:2] == 'IF' or collectionName[:2] == 'IC' or collectionName[:2] == 'IH'):
+            if (data['time']=="15:14:00.000000" or data['time']=="15:14:00" ):
+                cleanRequired = False
+            if data["time"][:2] == "15"  and data["time"][3:5] >= "01" and data["time"][3:5] < "14": 
+                cleanRequired = False
+        
         theTime = data['time']
         if theTime == '':
             cleanRequired = True
