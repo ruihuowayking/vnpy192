@@ -72,7 +72,7 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
         """Constructor"""
         super(JDualThrust_IntraDayStrategy, self).__init__(ctaEngine, setting) 
         
-        self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar)
+        self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar,vtSymbol =self.vtSymbol)
         self.am = ArrayManager()
         self.barList = []
         self.timeinterval = 4

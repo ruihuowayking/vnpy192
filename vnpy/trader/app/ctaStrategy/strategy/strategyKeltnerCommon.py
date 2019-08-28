@@ -70,7 +70,7 @@ class KeltnerCommonStrategy(CtaTemplate):
         """Constructor"""
         super(KeltnerCommonStrategy, self).__init__(ctaEngine, setting) 
         
-        self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar)
+        self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar,vtSymbol =self.vtSymbol)
         self.am = ArrayManager()
         self.barList = []
         # Read Parameters from Setting files
