@@ -287,6 +287,13 @@ class DrEngine(object):
             if bar.time[6:8] == '58': 
                 self.writeDrLog("ignore data at 09:00 and 09:01 and 09:02")
             return
+
+        #ignore tick data when CTP is 21:00 and 21:01 and 21:02
+        if (bar.time[:2] == '09' and (bar.time[3:5]=='14' or bar.time[3:5]=='15' or bar.time[3:5]=='16')):
+            if vtSymbol[0:2] == "T1" or vtSymbol[0:2] == "T2" or vtSymbol[0:2] == "TS" or vtSymbol[0:2] == "TF" or vtSymbol[0:2] == "IF" or vtSymbol[0:2] == "IC" or vtSymbol[0:2] == "IH":         
+                #if bar.time[6:8] == '58': 
+                self.writeDrLog("ignore data at 09:14 15 16 for zhongjinsuo")
+                return
         
         self.insertData(MINUTE_DB_NAME, vtSymbol, bar)
         

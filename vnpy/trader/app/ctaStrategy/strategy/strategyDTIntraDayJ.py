@@ -231,6 +231,7 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
     def ondayBar(self, dayBar):
         """收到日线推送（必须由用户继承实现）"""
         self.am.updateBar(dayBar)
+        self.range = None
         # 发出状态更新事件
         self.putEvent() 
     #----------------------------------------------------------------------
