@@ -73,7 +73,7 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
         """Constructor"""
         super(DT_IntraDayCommonStrategy, self).__init__(ctaEngine, setting) 
         
-        self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar)
+        self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar,vtSymbol =self.vtSymbol)
         self.am = ArrayManager()
         self.barList = []
         self.longEntry1 = 0
