@@ -7,7 +7,7 @@ from vnpy.trader.vtUtility import get_VolSize
 result = pd.read_csv("./pal_templt.csv")
 tr = result
 volSize = get_VolSize()  
-print(volSize)
+#print(volSize)
 def match_transaction(data,result):
     #print("hello")
     data["closestatus"] = 0 # 0 not process yet;1 match closed;2 partial match, partial close
