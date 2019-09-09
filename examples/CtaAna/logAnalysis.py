@@ -162,9 +162,21 @@ def match_transaction(data,result):
     print(closes)
     return result
                         
-                    
-                    
-        
+
+def calcpal(row,vs): 
+    lvsign = 1
+    mult = 10
+    pal = 0
+    mult = vs[row["comdt"]][0]
+    if row["closestatus"] == 1 :   
+        if(row["orderdirection"] != u"多"):
+            lvsign = -1
+        else:
+            lvsign = 1
+        pal = (float(row["closeprice"])-float(row["entryprice"]))* mult*lvsign
+    else:
+        pal = 0
+    return pal                   
 
 conn = sqlite3.connect('../../../sqllitedb/tradelog_vnpy.db')
 
@@ -189,6 +201,36 @@ for row in c1:
     
 tr.drop(index = 0,inplace = True)
 tr = tr.reset_index(drop=True)
-print(tr)  
+
+#tr["comdt"] = tr["contract"][:2]
+tr["comdt"] = tr["contract"].apply(lambda x:x[:2] if x[:2].isalpha() else x[0])
+upvol =  {k.upper(): v for k, v in volSize.items()}
+tr.to_csv("./tr.csv",encoding='utf-8')
+#lambda f: calcpal
+tr["pal"] = tr.apply(lambda row: calcpal(row,upvol), axis=1 )
+
+#tr["pal"] = tr.apply(lambda row:ccc(row), axis=1)
 tr.to_csv("./tr.csv",encoding='utf-8')
 conn.close()  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
