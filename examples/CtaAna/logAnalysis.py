@@ -173,7 +173,7 @@ def calcpal(row,vs):
             lvsign = -1
         else:
             lvsign = 1
-        pal = (float(row["closeprice"])-float(row["entryprice"]))* mult*lvsign
+        pal = (float(row["closeprice"])-float(row["entryprice"]))* mult*lvsign*abs(row['orderqty'])
     else:
         pal = 0
     return pal                   
