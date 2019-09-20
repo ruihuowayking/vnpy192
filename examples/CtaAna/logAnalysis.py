@@ -21,12 +21,15 @@ def match_transaction(data,result):
     opens = opens.reset_index(drop=True)
     closes = data[data["orderoffset"]==u"平仓"]
     closes = closes.reset_index(drop=True)
+    closes.sort_values(by = ['contract','ordertime'],axis = 0,ascending = True)
     #print("123",opens)
     partial = []
     for index,row in opens.iterrows():
         #print(index, row["qty"])
         #continue
         #print(index)
+        if row["contract"] == "MA001":
+            print("Debug")
         cursymbol = row["contract"]
         otime = row["ordertime"] 
         odir = row["orderdirection"]
@@ -39,11 +42,16 @@ def match_transaction(data,result):
         cstatus = 0
         cmatch = False  
         tomatch = oqty
-        closes = closes.reset_index(drop=True)
         
+        closes = closes[closes['contract']!='fake']
+        closes = closes.reset_index(drop=True)
+        closes.sort_values(by = ['contract','ordertime'],axis = 0,ascending = True)
         for ix,rw in closes.iterrows():
-            partial = []
+            #partial = []
             pt = ("",0,0)
+            
+            if rw["contract"] == "MA001":
+                print("Debug")            
             if tomatch == oqty:
                 if cursymbol == rw["contract"]  and otime < rw["ordertime"]:
                     if odir != rw["orderdirection"] and oqty == rw["qty"]:
@@ -51,8 +59,15 @@ def match_transaction(data,result):
                         cprice = rw["entryprice"]
                         cstatus = 1
                         cmatch = True
-                        closes.drop(index = ix,inplace = True)
+                        #closes.drop(index = ix,inplace = True)
+                        #closes = closes.reset_index(drop=True)
+                        #closes.sort_values(by = ['contract','ordertime'],axis = 0,ascending = True)                        
                         #del(ix)
+                        # use drop will mess up index in 2.7 change to dummy value
+                        d_index = list(closes.columns).index('qty')
+                        s_index = list(closes.columns).index('contract')
+                        closes.iat[ix,d_index ] = 0
+                        closes.iat[ix,s_index ] = 'fake'
                         break
                     elif odir != rw["orderdirection"] and oqty < rw["qty"]:
                         ctime = rw["ordertime"]
@@ -61,7 +76,9 @@ def match_transaction(data,result):
                         cmatch = True
                         d_index = list(closes.columns).index('qty')
                         #print(closes.iloc[ ix,d_index])
-                        closes.iloc[ ix,d_index] = rw["qty"] - oqty
+                        #closes.iloc[ ix,d_index] = rw["qty"] - oqty
+                        closes.iat[ix,d_index ] = rw["qty"] - oqty
+                        print(closes.iloc[ix])
                         #closes.del(ix)
                         break                    
                     
@@ -72,9 +89,14 @@ def match_transaction(data,result):
                         cstatus = 2
                         #cmatch = True 
                         pt = (ctime,cprice,rw["qty"])
-                        tomatch = oqty - rw["qty"]   
-                        partial = partial.append(pt)
-                        closes.drop(index = ix,inplace = True)
+                        tomatch = tomatch - rw["qty"]   
+                        partial.append(pt)
+                        #closes.drop(index = ix,inplace = True)
+                        # use drop will mess up index in 2.7 change to dummy value
+                        d_index = list(closes.columns).index('qty')
+                        s_index = list(closes.columns).index('contract')
+                        closes.iat[ix,d_index ] = 0
+                        closes.iat[ix,s_index ] = 'fake'
                         continue
                     else:
                         pass
@@ -86,8 +108,13 @@ def match_transaction(data,result):
                         cstatus = 1
                         cmatch = True
                         pt = (ctime,cprice,rw["qty"])
-                        partial = partial.append(pt)
-                        closes.drop(index = ix,inplace = True)                 
+                        partial.append(pt)
+                        #closes.drop(index = ix,inplace = True)
+                        # use drop will mess up index in 2.7 change to dummy value
+                        d_index = list(closes.columns).index('qty')
+                        s_index = list(closes.columns).index('contract')
+                        closes.iat[ix,d_index ] = 0
+                        closes.iat[ix,s_index ] = 'fake'                        
                         break
                     elif odir != rw["orderdirection"] and tomatch < rw["qty"]:
                         ctime = rw["ordertime"]
@@ -100,9 +127,9 @@ def match_transaction(data,result):
                         #print(ix)
                         #closes.to_csv("./test.csv")
                         #print(closes.iloc[ ix,d_index])
-                        closes.iloc[ ix,d_index] = rw["qty"] - oqty
-                        pt = (ctime,cprice,rw["qty"])
-                        partial = partial.append(pt)
+                        closes.iloc[ ix,d_index] = rw["qty"] - tomatch
+                        pt = (ctime,cprice,tomatch)
+                        partial.append(pt)
                         #closes.del(ix)
                         break                                
                     elif odir != rw["orderdirection"] and tomatch > rw["qty"]:
@@ -113,8 +140,13 @@ def match_transaction(data,result):
                         #cmatch = True 
                         pt = (ctime,cprice,rw["qty"])
                         tomatch = tomatch - rw["qty"]   
-                        partial = partial.append(pt)
-                        closes.drop(index = ix,inplace = True)
+                        partial.append(pt)
+                        #closes.drop(index = ix,inplace = True)
+                        # use drop will mess up index in 2.7 change to dummy value
+                        d_index = list(closes.columns).index('qty')
+                        s_index = list(closes.columns).index('contract')
+                        closes.iat[ix,d_index ] = 0
+                        closes.iat[ix,s_index ] = 'fake'                        
                         continue
                     else:
                         pass
@@ -140,7 +172,7 @@ def match_transaction(data,result):
             oneline["closeprice"] = 0             
             #oneline["orderdirection"] = row["orderdirection"]              
         else:
-            if partial :
+            if len(partial) > 0 :
                 #print(partial)
                 cprice = 0
                 tqty = 0
@@ -151,7 +183,10 @@ def match_transaction(data,result):
                     tqty = tqty + sub[2]
                 if tqty != oqty:
                     print("Amount is not match, check!")
-                cprice = cprice /len(pt)
+                cprice = cprice /len(partial)
+                oneline["closetime"] = ctime
+                oneline["closeprice"] = cprice
+                del partial[:]                
             else:
                 oneline["closetime"] = ctime
                 oneline["closeprice"] = cprice
@@ -210,7 +245,7 @@ tr.to_csv("./tr.csv",encoding='utf-8')
 tr["pal"] = tr.apply(lambda row: calcpal(row,upvol), axis=1 )
 
 #tr["pal"] = tr.apply(lambda row:ccc(row), axis=1)
-tr.to_csv("./tr.csv",encoding='utf-8')
+tr.to_csv("./tr1.csv",encoding='utf-8')
 conn.close()  
 
 
