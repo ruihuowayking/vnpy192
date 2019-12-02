@@ -10,13 +10,13 @@
     {
         "name": "T09_DT",
         "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "T1912",
+        "vtSymbol": "T2003",
         "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",10],["p5",26]]
     },      
     {
         "name": "Daliang J Dual Thrust DayChart System",
         "className": "JDualThrust_IntraDayStrategy",
-        "vtSymbol": "j2001"
+        "vtSymbol": "j2005"
     },
     {
         "name": "rb10_TurtleClose",
@@ -76,7 +76,7 @@
         "name": "sc_DT",
         "className": "DT_IntraDayCommonStrategy",
         "vtSymbol": "sc2001",
-        "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
+        "strParams":[["unit",1],["p1",10.4],["p2",10.4],["p3",5],["p4",20],["p5",55]]
     },  
     {
         "name": "ss_DT",
@@ -85,9 +85,9 @@
         "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
     },
     {
-        "name": "rb10_DT",
+        "name": "rb_DT",
         "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "rb2001",
-        "strParams":[["unit",2],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
+        "vtSymbol": "rb2005",
+        "strParams":[["unit",2],["p1",10.4],["p2",10.4],["p3",5],["p4",20],["p5",55]]
     }    
 ]
