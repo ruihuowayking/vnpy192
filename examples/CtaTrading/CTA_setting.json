@@ -19,9 +19,9 @@
         "vtSymbol": "j2005"
     },
     {
-        "name": "rb10_TurtleClose",
+        "name": "rb_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "rb2001",
+        "vtSymbol": "rb2005",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },
     {
@@ -39,7 +39,7 @@
     {
         "name": "ta_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "TA001",
+        "vtSymbol": "TA005",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },  
     {
@@ -57,7 +57,7 @@
     {
         "name": "SF_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "SF001",
+        "vtSymbol": "SF005",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },             
     {
