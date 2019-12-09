@@ -2,13 +2,13 @@
 
              
     {
-        "name": "AP10_DT",
+        "name": "AP_DT",
         "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "AP001",
-        "strParams":[["unit",1],["p1",0.5],["p2",0.6],["p3",6],["p4",20],["p5",55]]
+        "vtSymbol": "AP005",
+        "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
     },          
     {
-        "name": "T09_DT",
+        "name": "T_DT",
         "className": "DT_IntraDayCommonStrategy",
         "vtSymbol": "T2003",
         "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",10],["p5",26]]
@@ -25,15 +25,15 @@
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },
     {
-        "name": "hc01_TurtleClose",
+        "name": "hc_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "hc2001",
+        "vtSymbol": "hc2005",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },    
     {
         "name": "i_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "i2001",
+        "vtSymbol": "i2005",
         "strParams":[["unit",1],["p1",22],["p2",22],["p3",11],["p4",11],["p5",55]]        
     },  
     {
@@ -51,7 +51,7 @@
     {
         "name": "pp_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "pp2001",
+        "vtSymbol": "pp2005",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },    
     {
@@ -88,6 +88,6 @@
         "name": "rb_DT",
         "className": "DT_IntraDayCommonStrategy",
         "vtSymbol": "rb2005",
-        "strParams":[["unit",2],["p1",10.4],["p2",10.4],["p3",5],["p4",20],["p5",55]]
+        "strParams":[["unit",2],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
     }    
 ]
