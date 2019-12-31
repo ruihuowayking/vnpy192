@@ -232,6 +232,7 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
         """收到日线推送（必须由用户继承实现）"""
         self.am.updateBar(dayBar)
         self.range = None
+        self.dayOpen = 0
         # 发出状态更新事件
         self.putEvent() 
     #----------------------------------------------------------------------
