@@ -81,7 +81,7 @@
     {
         "name": "ss_DT",
         "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "ss2002",
+        "vtSymbol": "ss2006",
         "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
     },
     {
