@@ -13,9 +13,9 @@ from sqlalchemy.sql.expression import false
 from vnpy.trader.app.LeonOrderLog.leonlogengine import persisttrade
 
 ########################################################################
-class JDualThrust_IntraDayStrategy(CtaTemplate):
+class J_DevDualThrust_IntraDayStrategy(CtaTemplate):
     """DualThrust交易策略"""
-    className = 'JDualThrust_IntraDayStrategy'
+    className = 'J_DevDualThrust_IntraDayStrategy'
     author = u'Leon Zhao'
 
     # 策略参数
@@ -70,12 +70,12 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def __init__(self, ctaEngine, setting):
         """Constructor"""
-        super(JDualThrust_IntraDayStrategy, self).__init__(ctaEngine, setting) 
+        super(J_DevDualThrust_IntraDayStrategy, self).__init__(ctaEngine, setting) 
         
         self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar,vtSymbol =self.vtSymbol)
         self.am = ArrayManager()
         self.barList = []
-        self.timeinterval = 4
+        self.timeinterval = 1
         self.countdown = 0
 
     #----------------------------------------------------------------------
@@ -122,18 +122,19 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
                 calcRange = self.range2
         else:
             calcRange = 0
+            
+        return 3#for test purpose
         return calcRange            
         
     #----------------------------------------------------------------------
     def onBar(self, bar):
         """收到Bar推送（必须由用户继承实现）"""
-        # 撤销之前发出的尚未成交的委托（包括限价单和停止单）
+        # 撤销之前发出的尚未成交的委托（包括限价单和停止单）     
+        if self.reduceCountdown() > 0:
+            return
         
-        if (bar.datetime.hour < 14 or (bar.datetime.hour == 14 and bar.datetime.minute < 40)):            
-            if self.countdown > 0:
-                self.countdown = self.countdown - 1
-                #print(self.countdown)
-                return        
+        
+        #No cound down, normal process
         self.cancelAll()
 
         self.bg.updateBar(bar)
@@ -181,12 +182,13 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
                 if bar.close > self.longEntry :
                     #if not self.longEntered:
                         #self.buy(self.longEntry + 2, self.fixedSize)
-                        self.buy(bar.close,self.fixedSize)
+                        self.buy(bar.close-3,self.fixedSize)
                         self.countdown = self.timeinterval
                 elif bar.close < self.shortEntry:
-                    #if not self.shortEntered:
+                    #print("short")
+                    if not self.shortEntered:
                         #self.short(self.shortEntry - 2, self.fixedSize)
-                        self.short(bar.close,self.fixedSize)
+                        self.short(bar.close+3,self.fixedSize)
                         self.countdown = self.timeinterval
                 else:
                     pass
@@ -232,6 +234,7 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
         """收到日线推送（必须由用户继承实现）"""
         self.am.updateBar(dayBar)
         self.range = None
+        self.dayOpen = 0
         # 发出状态更新事件
         self.putEvent() 
     #----------------------------------------------------------------------
