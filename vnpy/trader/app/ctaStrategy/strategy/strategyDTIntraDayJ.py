@@ -129,11 +129,9 @@ class JDualThrust_IntraDayStrategy(CtaTemplate):
         """收到Bar推送（必须由用户继承实现）"""
         # 撤销之前发出的尚未成交的委托（包括限价单和停止单）
         
-        if (bar.datetime.hour < 14 or (bar.datetime.hour == 14 and bar.datetime.minute < 40)):            
-            if self.countdown > 0:
-                self.countdown = self.countdown - 1
-                #print(self.countdown)
-                return        
+        if self.reduceCountdown() > 0:
+            return
+       
         self.cancelAll()
 
         self.bg.updateBar(bar)

@@ -101,7 +101,7 @@ class CtaTemplate(object):
         else:  
             CtaTemplate.vol_Size = get_VolSize()  
             
-        self.base_interval = 2
+        self.base_interval = 4
         self.base_countdown = 0      
                
     #----------------------------------------------------------------------
