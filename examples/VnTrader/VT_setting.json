@@ -14,7 +14,7 @@
 	"logConsole": true,
 	"logFile": true,
 
-	"tdPenalty": ["IF", "IH", "IC"],
+	"tdPenalty": ["IF", "IH", "IC","ss","ag","rb","hc","ru","T","ni","sn"],
 
 	"maxDecimal": 4,
 
