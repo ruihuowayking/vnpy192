@@ -121,6 +121,7 @@ class DT_ChengfaStrategy(CtaTemplate):
         self.exitTime = time(hour=15, minute=20) #will not cover position when day close
         self.longEntered = False
         self.shortEntered = False
+        self.testflag = False
                 
     #----------------------------------------------------------------------
     def onInit(self):
@@ -239,6 +240,9 @@ class DT_ChengfaStrategy(CtaTemplate):
             self.barList.pop(0)
         lastBar = self.barList[-2]
         print(bar.close)
+        
+        if self.testflag:
+            return
         if self.pos == 0:
             self.buy(bar.close,self.fixedSize)
         elif self.pos > 0:
@@ -247,11 +251,13 @@ class DT_ChengfaStrategy(CtaTemplate):
             if not self.shortEntered:
                 #self.short(self.shortEntry -2 , self.fixedSize)
                 self.short(bar.close,self.fixedSize)
+            self.testflag = True
             # 持有空头仓位
         elif self.pos < 0:            
             self.cover(bar.close,abs(self.pos))
             if not self.longEntered:
                 self.buy(bar.close,self.fixedSize) 
+            self.testflag = True
         # 发出状态更新事件
         self.putEvent()
     #update day chart
