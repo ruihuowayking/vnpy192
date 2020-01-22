@@ -223,6 +223,7 @@ class DT_ChengfaStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def onBar(self, bar):
         """收到Bar推送（必须由用户继承实现）"""
+        self.fixedSize = 1
         if self.reduceCountdown() > 0:
             return
         # 撤销之前发出的尚未成交的委托（包括限价单和停止单）

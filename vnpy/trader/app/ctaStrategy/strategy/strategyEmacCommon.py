@@ -153,8 +153,10 @@ class EMAC_IntraDayCommonStrategy(CtaTemplate):
             daybar.datetime = idx    # 以第一根分钟K线的开始时间戳作为X分钟线的时间戳
             daybar.date = daybar.datetime.strftime('%Y%m%d')
             daybar.time = daybar.datetime.strftime('%H:%M:%S.%f')      
+            #print(daybar.datetime,daybar.close)
             self.indexam.updateBar(daybar)       
         temp = dfindex["pc"].rolling(20,min_periods=20).std()
+        temp = temp.dropna()
         self.pcstd = temp.iloc[-1]
     #----------------------------------------------------------------------
     def onInit(self):
@@ -244,7 +246,7 @@ class EMAC_IntraDayCommonStrategy(CtaTemplate):
             pass          
     
     def CalcKPI(self):
-        pass
+        #pass
         emafast1 = self.indexam.ema(self.fast1)
         emaslow1 = self.indexam.ema(self.slow1)
         emafast2 = self.indexam.ema(self.fast2)
@@ -281,6 +283,7 @@ class EMAC_IntraDayCommonStrategy(CtaTemplate):
         
         self.getUnitNo()
         self.emac_kpi = self.CalcKPI()
+        #print(self.emac_kpi,bar.close)
         pos_multiple = 1
         if abs(self.emac_kpi) > 30:
             pos_multiple = 2
@@ -308,7 +311,8 @@ class EMAC_IntraDayCommonStrategy(CtaTemplate):
                     #self.sell(self.shortEntry -2 , self.fixedSize)
                     self.sell(bar.close,abs(self.pos))
                     # 空头开仓单
-                elif self.emac_kpi < -1:    
+                elif self.emac_kpi < -1:   
+                    self.sell(bar.close,abs(self.pos))# close first then open new 
                     if not self.shortEntered:
                         #self.short(self.shortEntry -2 , self.fixedSize)
                         self.short(bar.close,self.fixedSize*pos_multiple)
@@ -317,12 +321,13 @@ class EMAC_IntraDayCommonStrategy(CtaTemplate):
                 self.shortEntered = True
                 self.longEntered = False
                 # 空头止损单
-                if self.emac_kpi > 1 and self.emac_kpi < 1:
+                if self.emac_kpi > -1 and self.emac_kpi < 1:
                     #self.cover(self.longEntry + 2, self.fixedSize)                
                     self.cover(bar.close,abs(self.pos))
                      # 多头开仓单
                     
                 elif self.emac_kpi > 1:
+                    self.cover(bar.close,abs(self.pos))# close first then open new
                     if not self.longEntered:
                         #self.buy(self.longEntry + 2, self.fixedSize)
                         self.buy(bar.close,self.fixedSize)
