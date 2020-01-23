@@ -205,7 +205,10 @@ class CtaTemplate(object):
                 return self.base_countdown
         else:
             self.base_countdown = 0
-            return  self.base_countdown           
+            return  self.base_countdown
+        
+    def resetCountdown(self):
+        self.base_countdown = 0           
     #----------------------------------------------------------------------
     def cancelAll(self):
 

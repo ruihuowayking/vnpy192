@@ -390,6 +390,7 @@ class TurtleUseCloseStrategy(CtaTemplate):
         if trade.direction == DIRECTION_LONG and trade.offset == OFFSET_OPEN:
             if (trade.volume + self.onTradeCnt) == self.fixedSize:
                 self.entryUnitNo = self.entryUnitNo + 1
+                self.resetCountdown()
             else:
                 self.onTradeCnt = trade.volume + self.onTradeCnt
                 self.writeCtaLog(u'%s: 部分成交， 进场次数未累加，注意！' %self.name)
@@ -401,6 +402,7 @@ class TurtleUseCloseStrategy(CtaTemplate):
         elif trade.direction == DIRECTION_SHORT and trade.offset == OFFSET_OPEN:
             if  (trade.volume + self.onTradeCnt) == self.fixedSize:            
                 self.entryUnitNo = self.entryUnitNo + 1
+                self.resetCountdown()
             else:
                 self.onTradeCnt = trade.volume + self.onTradeCnt
                 self.writeCtaLog(u'%s: 部分成交， 进场次数未累加，注意！' %self.name)                

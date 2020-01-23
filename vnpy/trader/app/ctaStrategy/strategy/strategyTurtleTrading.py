@@ -166,6 +166,7 @@ class TurtleTradingStrategy(CtaTemplate):
             self.shortEntry = trade.price
             self.shortStop = self.shortEntry + self.atrVolatility * 2
         
+        self.resetCountdown()
         # 发出状态更新事件
         self.putEvent()
 

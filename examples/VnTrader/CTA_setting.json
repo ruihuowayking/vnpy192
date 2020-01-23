@@ -8,7 +8,7 @@
 	{
         "name": "rb_test_chengfa",
         "className": "DT_ChengfaStrategy",
-        "vtSymbol": "rb2005",
+        "vtSymbol": "hc2005",
         "strParams":[["unit",1],["p1",5],["p2",21],["p3",8],["p4",34],["p5",13],["p6",55],["p7","dbname"]]
     },    
     {
