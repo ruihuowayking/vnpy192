@@ -53,13 +53,7 @@
         "className": "TurtleUseCloseStrategy",
         "vtSymbol": "pp2005",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
-    },    
-    {
-        "name": "SF_TurtleClose",
-        "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "SF005",
-        "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
-    },             
+    },            
     {
         "name": "eg_DT",
         "className": "DT_IntraDayCommonStrategy",
