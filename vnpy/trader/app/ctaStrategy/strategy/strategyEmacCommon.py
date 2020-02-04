@@ -11,35 +11,33 @@ from vnpy.trader.vtConstant import EMPTY_STRING
 from vnpy.trader.app.ctaStrategy.ctaTemplate import CtaTemplate, BarGenerator, ArrayManager
 from sqlalchemy.sql.expression import false
 from vnpy.trader.app.LeonOrderLog.leonlogengine import persisttrade
-
+import pandas as pd
+from datetime import datetime
 ########################################################################
-class DT_IntraDayCommonStrategy(CtaTemplate):
+class EMAC_IntraDayCommonStrategy(CtaTemplate):
     """DualThrust交易策略"""
-    className = 'DT_IntraDayCommonStrategy'
+    className = 'EMAC_IntraDayCommonStrategy'
     author = u'Leon Zhao'
 
     # 策略参数
     fixedSize = 1
-    k1 = 0.4
-    k2 = 0.4
+    fast1 = 5
+    slow1 = 21
     
-    rangeDays = 4
-    initDays = 30 # original value is 10
+    fast2 = 8
+    slow2 = 34
+    
+    fast3 = 13
+    slow3 = 55
+    dbpath = "./sr.csv"
+    cumrange = 0
+    shreshhold = 0.3
     atrDays = 20
-
-
+    atrValue = 0
+    initDays = 35
     # 策略变量
     barList = []                # K线对象的列表
 
-    dayOpen = 0
-    rangeHigh = 0
-    rangeLow = 0
-    rangeHighClose = 0
-    rangeLowClose = 0
-    range1 = 0
-    range2 = 0
-    
-    range = 0
     longEntry = 0
     shortEntry = 0
     exitTime = time(hour=15, minute=20) #will not cover position when day close
@@ -51,18 +49,18 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
     paramList = ['name',
                  'className',
                  'author',
-                 'vtSymbol',
-                 'k1',
-                 'k2']    
+                 'vtSymbol'
+                 ]    
 
     # 变量列表，保存了变量的名称
     varList = ['inited',
                'trading',
                'pos',
-               'range',
+               'cumrange',
                'longEntry',
                'shortEntry',
-               'exitTime'] 
+               'exitTime']
+    range = 0 
     longEntry1 = 0
     shortEntry1 = 0
     # 同步列表，保存了需要保存到数据库的变量名称
@@ -71,10 +69,11 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def __init__(self, ctaEngine, setting):
         """Constructor"""
-        super(DT_IntraDayCommonStrategy, self).__init__(ctaEngine, setting) 
+        super(EMAC_IntraDayCommonStrategy, self).__init__(ctaEngine, setting) 
         
         self.bg = BarGenerator(self.onBar,onDayBar = self.ondayBar,vtSymbol =self.vtSymbol)
         self.am = ArrayManager()
+        self.indexam = ArrayManager()
         self.barList = []
         self.longEntry1 = 0
         self.shortEntry1 = 0        
@@ -86,42 +85,79 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
                     if p[0] == 'unit':
                         self.fixedSize = p[1]
                     if p[0] == 'p1':
-                        self.k1 = p[1]
+                        self.fast1 = p[1]
                     if p[0] == 'p2':
-                        self.k2 = p[1]
+                        self.slow1 = p[1]
                     if p[0] == 'p3':
-                        self.rangeDays = p[1]
+                        self.fast2 = p[1]
                     if p[0] == 'p4':
-                        self.atrDays = p[1]  
+                        self.slow2 = p[1]  
                     if p[0] == 'p5':
-                        self.initDays = p[1]                                                 
-
+                        self.fast3 = p[1]                                                 
+                    if p[0] == 'p6':
+                        self.slow3 = p[1] 
+                    if p[0] == 'p7':
+                        self.dbpath = p[1] 
         else:
             # 策略参数
-            self.fixedSize = 1
-            self.k1 = 0.4
-            self.k2 = 0.4
+            self.fast1 = 5
+            self.slow1 = 21
             
-            self.rangeDays = 4
-            self.atrDays = 20
-            self.initDays = 55 # original value is 10     
+            self.fast2 = 8
+            self.slow2 = 34
+            
+            self.fast3 = 13
+            self.slow3 = 55
+            self.dbpath = "./sr.csv"
         #print(self.fixedSize,self.k1,self.k2,self.rangeDays,self.initDays)             
-        self.dayOpen = 0
-        self.rangeHigh = 0
-        self.rangeLow = 0
-        self.rangeHighClose = 0
-        self.rangeLowClose = 0
-        self.range1 = 0
-        self.range2 = 0
+        self.cumrange = 0
+        self.shreshhold = 0.3
+        self.atrDays = 20
         self.atrValue = 0
-        
-        self.range = 0
+        self.initDays = 100
         self.longEntry = 0
         self.shortEntry = 0
         self.exitTime = time(hour=15, minute=20) #will not cover position when day close
         self.longEntered = False
         self.shortEntered = False
-                
+        self.emac_kpi = 0
+        self.emac1scalar = 7.5
+        self.emac2scalar = 5.3
+        self.emac3scalar = 3.7
+        self.pcstd = 0
+        self.weights = [0.35,0.3,0.35]
+
+    def loadIndexBar(self,dbpath):
+        csvfile = "../TdxData/bar_data/"+dbpath
+        #print(csvfile)
+        dfindex = pd.read_csv(csvfile,parse_dates=True,index_col = 0)
+        #print(dbpath)
+        dfindex["pc"] =dfindex["close"]- dfindex["close"].shift(-1)
+        #dfordered = dfindex.sort_index( ascending=False)
+        daybar  = VtBarData()
+       
+        dt = datetime.now()
+        for idx,indexbar in dfindex.iterrows():
+            #print(idx)
+            daybar.vtSymbol = self.vtSymbol
+            daybar.symbol = self.vtSymbol
+            daybar.exchange = ""
+        
+            daybar.open = indexbar["open"]
+            daybar.high = indexbar["high"]
+            daybar.low = indexbar["low"]  
+            daybar.close = indexbar["close"]     
+            #dt = datetime.strptime(str(indexbar["trade_date"]),"%Y%m%d")      
+            #change bar Date to next day if time is night
+            #nextDay = 
+            daybar.datetime = idx    # 以第一根分钟K线的开始时间戳作为X分钟线的时间戳
+            daybar.date = daybar.datetime.strftime('%Y%m%d')
+            daybar.time = daybar.datetime.strftime('%H:%M:%S.%f')      
+            #print(daybar.datetime,daybar.close)
+            self.indexam.updateBar(daybar)       
+        temp = dfindex["pc"].rolling(20,min_periods=20).std()
+        temp = temp.dropna()
+        self.pcstd = temp.iloc[-1]
     #----------------------------------------------------------------------
     def onInit(self):
         """初始化策略（必须由用户继承实现）"""
@@ -129,9 +165,11 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
     
         # 载入历史数据，并采用回放计算的方式初始化策略数值
         initData = self.loadBar(self.initDays)
+        #dbpath = ""
+        self.loadIndexBar(self.dbpath)
         for bar in initData:
             self.onBar(bar)
-
+        
         self.putEvent()
 
     #----------------------------------------------------------------------
@@ -195,41 +233,43 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
             unitNo = int(self.capConfig * 0.0088 /(atr*var_size))
         if unitNo < 1:
             unitNo = 1
+
         return unitNo    
-        
+       
     #---------calcuate range for the last several days 
-    def calcRange(self):
+    def getUnitNo(self):
         if self.am.count >= self.atrDays + 1 :
             self.atrValue = self.am.atr(self.atrDays,False)
             if self.atrValue > 0 :
                 self.fixedSize = self.calcUnitNo(self.atrValue, self.fixedSize)          
-            self.rangeHigh = talib.MAX(self.am.high,self.rangeDays)[-1]
-            self.rangeLow =  talib.MIN(self.am.low,self.rangeDays)[-1]
-            self.rangeHighClose = talib.MAX(self.am.close,self.rangeDays)[-1]
-            self.rangeLowClose  = talib.MIN(self.am.close,self.rangeDays)[-1]
-            self.range1 = self.rangeHigh-self.rangeLowClose
-            self.range2 = self.rangeHighClose -self.rangeLow
-            
-            #print(self.rangeHigh,self.rangeLow)
-            if (self.range1 > self.range2) :
-                calcRange = self.range1
-            else:
-                calcRange = self.range2
         else:
-            calcRange = 0
-        return calcRange            
+            pass          
+    
+    def CalcKPI(self):
+        #pass
+        emafast1 = self.indexam.ema(self.fast1)
+        emaslow1 = self.indexam.ema(self.slow1)
+        emafast2 = self.indexam.ema(self.fast2)
+        emaslow2 = self.indexam.ema(self.slow2)       
+        emafast3 = self.indexam.ema(self.fast3)
+        emaslow3 = self.indexam.ema(self.slow3)
         
+        kpi = self.emac1scalar * (emafast1-emaslow1)*self.weights[0]/self.pcstd + self.emac2scalar *(emafast2-emaslow2)*self.weights[1]/self.pcstd + self.emac3scalar *(emafast3-emaslow3)*self.weights[2]/self.pcstd
+        return kpi   
+        #indexvol = self.indexam
     #----------------------------------------------------------------------
     def onBar(self, bar):
         """收到Bar推送（必须由用户继承实现）"""
+        
         if self.reduceCountdown() > 0:
             return
         # 撤销之前发出的尚未成交的委托（包括限价单和停止单）
+
         self.cancelAll()
 
         self.bg.updateBar(bar)
         barLength = 0
-        barLength = max(self.atrDays,self.rangeDays)   + 1      
+        barLength = self.atrDays   + 1      
         if self.am.count < barLength:
             return        
         # 计算指标数值
@@ -241,48 +281,23 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
             self.barList.pop(0)
         lastBar = self.barList[-2]
         
-        # 新的一天
-        #for commodity trade at night 9 also need because some day night is canncel due to holiday
-        if (lastBar.datetime.hour == 15 or lastBar.datetime.hour==14)  and ((bar.datetime.hour == 21 or bar.datetime.hour == 9)  ):
-        #for commodity not trade at night:
-        #if (lastBar.datetime.hour == 15 or lastBar.datetime.hour==14 and lastBar.datetime.minute==59) and ((bar.datetime.hour == 9)  ):
-            # 如果已经初始化
-            self.range = self.calcRange()
-            self.dayOpen = bar.open
-            if self.range:
-                self.longEntry = bar.open + self.k1 * self.range
-                self.shortEntry = bar.open - self.k2 * self.range           
-            
-
-            #self.longEntered = False
-            #self.shortEntered = False
+        self.getUnitNo()
+        self.emac_kpi = self.CalcKPI()
+        #print(self.emac_kpi,bar.close)
+        pos_multiple = 1
+        if abs(self.emac_kpi) > 30:
+            pos_multiple = 2
         else:
-            pass
-
-        # 尚未到收盘
-        if not self.range:
-            self.range = self.calcRange()
-            self.dayOpen = bar.open
-            if self.range:
-                self.longEntry = bar.open + self.k1 * self.range
-                self.shortEntry = bar.open - self.k2 * self.range  
-
-        if (self.range == 0 ):
-            #print(self.k1,self.k2,self.range,"b",self.longEntry,"c",bar.open,bar.datetime)
-            self.writeCtaLog(u'Range eq 0 , need to check')
-
+            pos_multiple = 1
+        #print(self.emac_kpi)    
         if True: # Trade Time, no matter when, just send signal
             if self.pos == 0:
                 self.longEntered = False
                 self.shortEntered = False                
-                if bar.close > self.longEntry :
-                    #if not self.longEntered:
-                        #self.buy(self.longEntry + 2, self.fixedSize)
-                        self.buy(bar.close,self.fixedSize)
-                elif bar.close < self.shortEntry:
-                    #if not self.shortEntered:
-                        #self.short(self.shortEntry - 2, self.fixedSize)
-                        self.short(bar.close,self.fixedSize)
+                if self.emac_kpi > 1 :
+                        self.buy(bar.close,self.fixedSize*pos_multiple)
+                elif self.emac_kpi < -1:
+                        self.short(bar.close,self.fixedSize*pos_multiple)
                 else:
                     pass
                 
@@ -292,22 +307,27 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
                 self.longEntered = True
                 self.shortEntered = False
                 # 多头止损单
-                if bar.close < self.shortEntry:
+                if self.emac_kpi < 1 and self.emac_kpi > -1:
                     #self.sell(self.shortEntry -2 , self.fixedSize)
                     self.sell(bar.close,abs(self.pos))
                     # 空头开仓单
+                elif self.emac_kpi < -1:   
+                    self.sell(bar.close,abs(self.pos))# close first then open new 
                     if not self.shortEntered:
                         #self.short(self.shortEntry -2 , self.fixedSize)
-                        self.short(bar.close,self.fixedSize)
+                        self.short(bar.close,self.fixedSize*pos_multiple)
             # 持有空头仓位
             elif self.pos < 0:
                 self.shortEntered = True
                 self.longEntered = False
                 # 空头止损单
-                if bar.close > self.longEntry:
+                if self.emac_kpi > -1 and self.emac_kpi < 1:
                     #self.cover(self.longEntry + 2, self.fixedSize)                
                     self.cover(bar.close,abs(self.pos))
                      # 多头开仓单
+                    
+                elif self.emac_kpi > 1:
+                    self.cover(bar.close,abs(self.pos))# close first then open new
                     if not self.longEntered:
                         #self.buy(self.longEntry + 2, self.fixedSize)
                         self.buy(bar.close,self.fixedSize)

@@ -77,6 +77,8 @@ class CtaTemplate(object):
     syncList = ['pos']
     cust_Setting = []
     vol_Size = {}
+    base_interval = 4
+    base_countdown = 0
 
     #----------------------------------------------------------------------
     def __init__(self, ctaEngine, setting):
@@ -97,7 +99,10 @@ class CtaTemplate(object):
         if len(CtaTemplate.vol_Size) > 0:
             pass
         else:  
-            CtaTemplate.vol_Size = get_VolSize()            
+            CtaTemplate.vol_Size = get_VolSize()  
+            
+        self.base_interval = 4
+        self.base_countdown = 0      
                
     #----------------------------------------------------------------------
     def onInit(self):
@@ -142,6 +147,8 @@ class CtaTemplate(object):
     #----------------------------------------------------------------------
     def buy(self, price, volume, stop=False):
         """买开"""
+        if self.trading:
+            self.base_countdown = self.base_interval
         return self.sendOrder(CTAORDER_BUY, price, volume, stop)
     
     #----------------------------------------------------------------------
@@ -152,6 +159,8 @@ class CtaTemplate(object):
     #----------------------------------------------------------------------
     def short(self, price, volume, stop=False):
         """卖开"""
+        if self.trading:
+            self.base_countdown = self.base_interval
         return self.sendOrder(CTAORDER_SHORT, price, volume, stop)          
  
     #----------------------------------------------------------------------
@@ -184,9 +193,25 @@ class CtaTemplate(object):
             self.ctaEngine.cancelStopOrder(vtOrderID)
         else:
             self.ctaEngine.cancelOrder(vtOrderID)
-            
+
+    def reduceCountdown(self):
+        # if there is count down, skip the cancel order
+        nowtime = datetime.datetime.now()
+        if (nowtime.hour < 14 or (nowtime.hour == 14 and nowtime.minute < 55)):            
+            if self.base_countdown > 0:
+                self.base_countdown = self.base_countdown - 1
+                return self.base_countdown
+            else:
+                return self.base_countdown
+        else:
+            self.base_countdown = 0
+            return  self.base_countdown
+        
+    def resetCountdown(self):
+        self.base_countdown = 0           
     #----------------------------------------------------------------------
     def cancelAll(self):
+
         """全部撤单"""
         self.ctaEngine.cancelAll(self.name)
     
