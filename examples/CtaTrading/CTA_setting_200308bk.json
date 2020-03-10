@@ -35,7 +35,7 @@
         "className": "TurtleUseCloseStrategy",
         "vtSymbol": "i2005",
         "strParams":[["unit",1],["p1",22],["p2",22],["p3",11],["p4",11],["p5",55]]        
-    },
+    },  
     {
         "name": "ta_TurtleClose",
         "className": "TurtleUseCloseStrategy",
@@ -48,7 +48,6 @@
         "vtSymbol": "MA005",
         "strParams":[["unit",2],["p1",22],["p2",22],["p3",11],["p4",11],["p5",55]]        
     }, 
-  
     {
         "name": "pp_TurtleClose",
         "className": "TurtleUseCloseStrategy",
