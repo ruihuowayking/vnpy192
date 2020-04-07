@@ -16,55 +16,55 @@
     {
         "name": "Daliang J Dual Thrust DayChart System",
         "className": "JDualThrust_IntraDayStrategy",
-        "vtSymbol": "j2005"
+        "vtSymbol": "j2009"
     },
     {
         "name": "rb_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "rb2005",
+        "vtSymbol": "rb2010",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },
     {
         "name": "hc_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "hc2005",
+        "vtSymbol": "hc2010",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },    
     {
         "name": "i_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "i2005",
+        "vtSymbol": "i2009",
         "strParams":[["unit",1],["p1",22],["p2",22],["p3",11],["p4",11],["p5",55]]        
     },
     {
         "name": "ta_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "TA005",
+        "vtSymbol": "TA009",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },  
     {
         "name": "ma_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "MA005",
+        "vtSymbol": "MA009",
         "strParams":[["unit",2],["p1",22],["p2",22],["p3",11],["p4",11],["p5",55]]        
     }, 
   
     {
         "name": "pp_TurtleClose",
         "className": "TurtleUseCloseStrategy",
-        "vtSymbol": "pp2005",
+        "vtSymbol": "pp2009",
         "strParams":[["unit",2],["p1",26],["p2",26],["p3",13],["p4",13],["p5",55]]        
     },            
     {
         "name": "eg_DT",
         "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "eg2005",
+        "vtSymbol": "eg2009",
         "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
     },  
     {
         "name": "eb_DT",
         "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "eb2005",
+        "vtSymbol": "eb2009",
         "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
     },  
     {
@@ -82,7 +82,7 @@
     {
         "name": "rb_DT",
         "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "rb2005",
+        "vtSymbol": "rb2010",
         "strParams":[["unit",2],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
     }    
 ]
