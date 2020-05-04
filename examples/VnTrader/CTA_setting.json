@@ -1,21 +1,7 @@
-[
-	{
-        "name": "sr_EMAC",
-        "className": "EMAC_IntraDayCommonStrategy",
-        "vtSymbol": "SR005",
-        "strParams":[["unit",1],["p1",5],["p2",21],["p3",8],["p4",34],["p5",13],["p6",55],["p7","SR2005.csv"]]
-    },
-	{
-        "name": "rb_test_chengfa",
-        "className": "DT_ChengfaStrategy",
-        "vtSymbol": "hc2005",
-        "strParams":[["unit",1],["p1",5],["p2",21],["p3",8],["p4",34],["p5",13],["p6",55],["p7","dbname"]]
-    },    
-    {
-        "name": "J_DT_Test",
-        "className": "J_DevDualThrust_IntraDayStrategy",
-        "vtSymbol": "rb2005",
-        "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",10],["p5",26]]
-    }
-            
+[{
+        "name": "AP_DT",
+        "className": "DT_IntraDayCommonStrategy",
+        "vtSymbol": "AP010",
+        "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",8],["p5",55]]
+    }           
 ]
