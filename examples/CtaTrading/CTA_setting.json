@@ -10,7 +10,7 @@
     {
         "name": "T_DT",
         "className": "DT_IntraDayCommonStrategy",
-        "vtSymbol": "T2006",
+        "vtSymbol": "T2009",
         "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",10],["p5",26]]
     },      
     {
