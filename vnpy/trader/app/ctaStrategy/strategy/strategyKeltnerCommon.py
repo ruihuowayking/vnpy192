@@ -91,7 +91,7 @@ class KeltnerCommonStrategy(CtaTemplate):
                     if p[0] == 'p5':
                         self.initDays = p[1]                                                 
                     if p[0] == 'p6':
-                        self.kExit = p[1]  
+                        self.rsilen = p[1]
         else:
             # 策略参数
             self.fixedSize = 1
@@ -101,7 +101,7 @@ class KeltnerCommonStrategy(CtaTemplate):
             self.maDays = 13
             self.atrDays = 20
             self.initDays = 55 # original value is 10  
-            self.kExit = 0.5   
+            self.rsilen = 21
         #print(self.fixedSize,self.kUpper,self.kLower,self.maDays,self.initDays)             
         self.atrAvg = 0
         self.maHigh = 0
@@ -110,6 +110,8 @@ class KeltnerCommonStrategy(CtaTemplate):
         self.shortEntry = 0
         self.longExit = 0
         self.shortExit = 0
+        self.rsival = 1000
+        self.rsiconfig = 50
     
         #exitTime = time(hour=15, minute=20) #will not cover position when day close
     
@@ -147,7 +149,16 @@ class KeltnerCommonStrategy(CtaTemplate):
         if (tick.datetime.hour == 8 or tick.datetime.hour ==20):
             return
         self.bg.updateTick(tick)
-        
+
+    def keltner(self, n, dev, ret_array=False):
+        """肯特纳通道"""
+        mid = self.sma(n, ret_array)
+        atr = self.atr(n, ret_array)
+
+        up = mid + atr * dev
+        down = mid - atr * dev
+
+        return up, down
     def calcUnitNo(self,atr,fixSize):
         keltnerCap = 0.0
         defaultCap = 0.0
@@ -197,16 +208,24 @@ class KeltnerCommonStrategy(CtaTemplate):
             self.atrAvg = self.am.atr(self.atrDays,False)
             if self.atrAvg > 0 :
                 self.fixedSize = self.calcUnitNo(self.atrAvg, self.fixedSize)          
-            self.maHigh = self.am.sma(self.maDays,array=False)
-            self.maLow =  self.am.sma(self.maDays,array=False)
-            self.longEntry = self.maHigh + self.atrAvg * self.kUpper
-            self.shortEntry = self.maLow - self.atrAvg * self.kLower
-            self.longExit = self.maHigh - self.atrAvg * self.kExit
-            self.shortExit = self.maLow + self.atrAvg * self.kExit            
+            hval = self.am.highArray
+            lval = self.am.lowArray
+            cval = self.am.closeArray
+            meanval = [(h+l+c)/3 for h , l, c in zip(hval, lval, cval)]
+            sidx = len(meanval)-self.maDays
+            self.emamean = np.mean(meanval[sidx:])
+            #self.emamean = self.am.ema(meanval, array=False)
+            self.rsival = self.am.rsi(self.rsilen, array=False)
+            self.longEntry = self.emamean + self.atrAvg * self.kUpper
+            self.shortEntry = self.emamean - self.atrAvg * self.kLower
+            self.longExit = self.emamean
+            self.shortExit = self.emamean
 
     #----------------------------------------------------------------------
     def onBar(self, bar):
         """收到Bar推送（必须由用户继承实现）"""
+        if self.reduceCountdown() > 0:
+            return
         # 撤销之前发出的尚未成交的委托（包括限价单和停止单）
         self.cancelAll()
 
@@ -241,20 +260,20 @@ class KeltnerCommonStrategy(CtaTemplate):
         # 尚未到收盘
         if self.maHigh < 1:
             self.calcKPI()
-        if (self.longEntry < self.maHigh ) or (self.shortEntry > self.maLow):
+        if (self.longEntry < self.emamean ) or (self.shortEntry > self.emamean) or (abs(self.rsival) > 100):
             #print(self.kUpper,self.kLower,self.range,"b",self.longEntry,"c",bar.open,bar.datetime)
-            self.writeCtaLog(u'long Entry less than High MA or vice vesa , need to check')
+            self.writeCtaLog(u'long Entry less than MA or vice vesa , or RSI wrong, need to check')
             return
         
         if True: # Trade Time, no matter when, just send signal
             if self.pos == 0:
                 self.longEntered = False
                 self.shortEntered = False                
-                if bar.close > self.longEntry :
+                if bar.close > self.longEntry and self.rsival >= self.rsiconfig:
                     #if not self.longEntered:
                         #self.buy(self.longEntry + 2, self.fixedSize)
                         self.buy(bar.close,self.fixedSize)
-                elif bar.close < self.shortEntry:
+                elif bar.close < self.shortEntry and self.rsival <= self.rsiconfig:
                     #if not self.shortEntered:
                         #self.short(self.shortEntry - 2, self.fixedSize)
                         self.short(bar.close,self.fixedSize)
@@ -299,6 +318,7 @@ class KeltnerCommonStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def onOrder(self, order):
         """收到委托变化推送（必须由用户继承实现）"""
+        persisttrade(self.vtSymbol, self.className, trade)
         pass
 
     #----------------------------------------------------------------------

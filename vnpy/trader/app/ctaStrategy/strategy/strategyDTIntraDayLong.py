@@ -121,6 +121,9 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
         self.exitTime = time(hour=15, minute=20)  # will not cover position when day close
         self.longEntered = False
         self.shortEntered = False
+        self.rsival = 1000
+        self.rsiconfig = 50
+        self.rsilen = 21
 
     # ----------------------------------------------------------------------
     def onInit(self):
@@ -210,6 +213,7 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
             self.rangeLowClose = talib.MIN(self.am.close, self.rangeDays)[-1]
             self.range1 = self.rangeHigh - self.rangeLowClose
             self.range2 = self.rangeHighClose - self.rangeLow
+            self.rsival = self.am.rsi(self.rsilen, array=False)
 
             # print(self.rangeHigh,self.rangeLow)
             if (self.range1 > self.range2):
@@ -275,27 +279,19 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
         if (self.range == 0):
             # print(self.k1,self.k2,self.range,"b",self.longEntry,"c",bar.open,bar.datetime)
             self.writeCtaLog(u'Range eq 0 , need to check')
+        if abs(self.rsival) > 100:
+            self.writeCtaLog(u'RSI large than 100, need to check')
 
         if True:  # Trade Time, no matter when, just send signal
             if self.pos == 0:
                 self.longEntered = False
                 self.shortEntered = False
-                if bar.close > self.longEntry:
+                if bar.close > self.longEntry and self.rsival >= self.rsiconfig:
                     # if not self.longEntered:
                     # self.buy(self.longEntry + 2, self.fixedSize)
                     self.buy(bar.close, self.fixedSize)
-
-                #long only, do not open short position
-                '''
-                elif bar.close < self.shortEntry:
-                    # if not self.shortEntered:
-                    # self.short(self.shortEntry - 2, self.fixedSize)
-                    self.short(bar.close, self.fixedSize)
-                '''
                 else:
                     pass
-
-
             # 持有多头仓位
             elif self.pos > 0:
                 self.longEntered = True
