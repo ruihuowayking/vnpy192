@@ -20,10 +20,10 @@ class KeltnerCommonStrategy(CtaTemplate):
 
     # 策略参数
     fixedSize = 1
-    kUpper = 1
-    kLower = 1
+    kUpper = 2
+    kLower = 2
     
-    maDays = 30
+    maDays = 13
     atrDays = 20   # I may use the average of ATR to reduce the range
     initDays = 100 # original value is 10    
     kExit = 0.5
@@ -95,10 +95,10 @@ class KeltnerCommonStrategy(CtaTemplate):
         else:
             # 策略参数
             self.fixedSize = 1
-            self.kUpper = 1
-            self.kLower = 1
+            self.kUpper = 2
+            self.kLower = 2
             
-            self.maDays = 4
+            self.maDays = 13
             self.atrDays = 20
             self.initDays = 55 # original value is 10  
             self.kExit = 0.5   

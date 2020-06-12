@@ -14,5 +14,5 @@
 	"logConsole": true,
 	"logFile": true,
 
-	"tdPenalty": ["IF", "IH", "IC","ss","ag","rb","hc","ru","T","ni","sn"]
+	"tdPenalty": ["IF", "IH", "IC","ss","ag","rb","hc","ru","T","ni","sn","cu"]
 }
