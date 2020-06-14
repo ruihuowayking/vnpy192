@@ -14,9 +14,9 @@ from vnpy.trader.app.LeonOrderLog.leonlogengine import persisttrade
 
 
 ########################################################################
-class DT_IntraDayCommonStrategy(CtaTemplate):
+class DT_IntraDayShortStrategy(CtaTemplate):
     """DualThrust交易策略"""
-    className = 'DT_IntraDayCommonStrategy'
+    className = 'DT_IntraDayShortStrategy'
     author = u'Leon Zhao'
 
     # 策略参数
@@ -71,7 +71,7 @@ class DT_IntraDayCommonStrategy(CtaTemplate):
     # ----------------------------------------------------------------------
     def __init__(self, ctaEngine, setting):
         """Constructor"""
-        super(DT_IntraDayCommonStrategy, self).__init__(ctaEngine, setting)
+        super(DT_IntraDayShortStrategy, self).__init__(ctaEngine, setting)
 
         self.bg = BarGenerator(self.onBar, onDayBar=self.ondayBar, vtSymbol=self.vtSymbol)
         self.am = ArrayManager()

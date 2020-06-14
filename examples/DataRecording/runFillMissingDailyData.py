@@ -5,7 +5,7 @@ import json
 from datetime import datetime, timedelta, time
 import requests
 from pymongo import MongoClient
-
+import string
 from vnpy.trader.app.ctaStrategy.ctaBase import MINUTE_DB_NAME, TICK_DB_NAME
 from vnpy.trader.vtUtility import get_VolSize
 from vnpy.trader.vtFunction import getJsonPath
@@ -231,17 +231,25 @@ def runDataRefilling():
     symbolMap = getSymbolMapping() 
     print(symbolMap)
     # 遍历执行清洗
+
+    tofill = ["TS"]
+    tofilllen = 100
     today = datetime.now()
-    start = today - timedelta(10)   # 清洗过去10天数据
+    start = today - timedelta(tofilllen)   # 清洗过去10天数据
     end = start + timedelta(9)
     start.replace(hour=0, minute=0, second=0, microsecond=0)
-    start = datetime.strptime('2019-04-24 00:00:00', '%Y-%m-%d %H:%M:%S')
-    end = datetime.strptime('2019-04-25 16:00:00', '%Y-%m-%d %H:%M:%S')
+    #start = datetime.strptime('2019-04-24 00:00:00', '%Y-%m-%d %H:%M:%S')
+    #end = datetime.strptime('2019-04-25 16:00:00', '%Y-%m-%d %H:%M:%S')
         
     for l in setting['bar']:
         symbol = l[0]
-        #fillMissingData(MINUTE_DB_NAME, symbol, start,volSize,symbolMap)
-        fillMissingDailyData(MINUTE_DB_NAME, symbol, start,end,volSize,symbolMap)
+        tempstr = symbol
+        tempstr = tempstr.rstrip(string.digits)
+        print(tempstr)
+        if tempstr in tofill:
+            #fillMissingData(MINUTE_DB_NAME, symbol, start,volSize,symbolMap)
+            fillMissingDailyData(MINUTE_DB_NAME, symbol, start,end,volSize,symbolMap)
+            sleep(5)
     
     print(u'数据清洗工作完成')
     

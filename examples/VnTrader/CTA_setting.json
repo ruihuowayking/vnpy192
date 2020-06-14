@@ -1,7 +1,26 @@
-[{
+[
+    {
         "name": "AP_DT",
         "className": "DT_IntraDayCommonStrategy",
         "vtSymbol": "AP010",
         "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",8],["p5",55]]
-    }           
+    },
+    {
+        "name": "TS_DT_Long",
+        "className": "DT_IntraDayLongStrategy",
+        "vtSymbol": "TS2009",
+        "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
+    },
+    {
+        "name": "TS_DT_Short",
+        "className": "DT_IntraDayShortStrategy",
+        "vtSymbol": "TS2009",
+        "strParams":[["unit",1],["p1",0.4],["p2",0.4],["p3",5],["p4",20],["p5",55]]
+    },
+    {
+        "name": "TS_KK",
+        "className": "KeltnerCommonStrategy",
+        "vtSymbol": "TS2009",
+        "strParams":[["unit",1],["p1",2],["p2",2],["p3",13],["p4",20],["p5",55],["p6",21]]
+    }
 ]
