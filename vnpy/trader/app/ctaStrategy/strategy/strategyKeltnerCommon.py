@@ -9,6 +9,7 @@ import talib
 from vnpy.trader.vtObject import VtBarData
 from vnpy.trader.vtConstant import EMPTY_STRING
 from vnpy.trader.app.ctaStrategy.ctaTemplate import CtaTemplate, BarGenerator, ArrayManager
+from vnpy.trader.app.LeonOrderLog.leonlogengine import persisttrade
 from sqlalchemy.sql.expression import false
 import numpy as np
 
@@ -324,11 +325,12 @@ class KeltnerCommonStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def onOrder(self, order):
         """收到委托变化推送（必须由用户继承实现）"""
-        persisttrade(self.vtSymbol, self.className, trade)
+
         pass
 
     #----------------------------------------------------------------------
     def onTrade(self, trade):
+        persisttrade(self.vtSymbol, self.className, trade)
         # 发出状态更新事件
         self.putEvent()
 
