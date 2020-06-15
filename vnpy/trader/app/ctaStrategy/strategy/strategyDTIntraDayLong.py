@@ -213,7 +213,14 @@ class DT_IntraDayLongStrategy(CtaTemplate):
             self.rangeLowClose = talib.MIN(self.am.close, self.rangeDays)[-1]
             self.range1 = self.rangeHigh - self.rangeLowClose
             self.range2 = self.rangeHighClose - self.rangeLow
-            self.rsival = self.am.rsi(self.rsilen, array=False)
+            #self.rsival = self.am.rsi(self.rsilen, array=False)
+
+            tlen = len(self.am.closeArray)-self.rsilen-2
+            rsi1 = talib.RSI(self.am.closeArray[tlen:], timeperiod=self.rsilen)
+            self.rsival = rsi1[-1]
+            #print("rsi array", rsi1)
+
+            #print("\n\rthe rsi is:", rsi1[-1])
 
             # print(self.rangeHigh,self.rangeLow)
             if (self.range1 > self.range2):
@@ -283,6 +290,7 @@ class DT_IntraDayLongStrategy(CtaTemplate):
             self.writeCtaLog(u'RSI large than 100, need to check')
 
         if True:  # Trade Time, no matter when, just send signal
+            #print("DT Long:", self.longEntry, self.shortEntry, self.rsival)
             if self.pos == 0:
                 self.longEntered = False
                 self.shortEntered = False

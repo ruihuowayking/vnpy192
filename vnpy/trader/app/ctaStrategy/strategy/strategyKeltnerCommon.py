@@ -10,6 +10,7 @@ from vnpy.trader.vtObject import VtBarData
 from vnpy.trader.vtConstant import EMPTY_STRING
 from vnpy.trader.app.ctaStrategy.ctaTemplate import CtaTemplate, BarGenerator, ArrayManager
 from sqlalchemy.sql.expression import false
+import numpy as np
 
 
 ########################################################################
@@ -215,7 +216,11 @@ class KeltnerCommonStrategy(CtaTemplate):
             sidx = len(meanval)-self.maDays
             self.emamean = np.mean(meanval[sidx:])
             #self.emamean = self.am.ema(meanval, array=False)
-            self.rsival = self.am.rsi(self.rsilen, array=False)
+
+            tlen = len(self.am.closeArray) - self.rsilen - 2
+            rsi1 = talib.RSI(self.am.closeArray[tlen:], timeperiod=self.rsilen)
+            self.rsival = rsi1[-1]
+
             self.longEntry = self.emamean + self.atrAvg * self.kUpper
             self.shortEntry = self.emamean - self.atrAvg * self.kLower
             self.longExit = self.emamean
@@ -266,6 +271,7 @@ class KeltnerCommonStrategy(CtaTemplate):
             return
         
         if True: # Trade Time, no matter when, just send signal
+            #print("KK:", self.longEntry, self.shortEntry, self.rsival)
             if self.pos == 0:
                 self.longEntered = False
                 self.shortEntered = False                
