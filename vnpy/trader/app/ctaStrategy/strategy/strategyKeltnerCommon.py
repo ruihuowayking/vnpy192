@@ -272,7 +272,7 @@ class KeltnerCommonStrategy(CtaTemplate):
             return
         
         if True: # Trade Time, no matter when, just send signal
-            #print("KK:", self.longEntry, self.shortEntry, self.rsival)
+            print("KK:", self.longEntry, self.shortEntry, self.rsival)
             if self.pos == 0:
                 self.longEntered = False
                 self.shortEntered = False                

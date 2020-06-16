@@ -122,7 +122,7 @@ class DT_IntraDayShortStrategy(CtaTemplate):
         self.longEntered = False
         self.shortEntered = False
         self.rsival = 1000
-        self.rsiconfig = 50
+        self.rsiconfig = 80
         self.rsilen = 21
 
     # ----------------------------------------------------------------------
@@ -285,7 +285,7 @@ class DT_IntraDayShortStrategy(CtaTemplate):
         if abs(self.rsival) > 100:
             self.writeCtaLog(u'RSI large than 100, need to check')
         if True:  # Trade Time, no matter when, just send signal
-            #print("DT Short:", self.longEntry, self.shortEntry, self.rsival)
+            print("DT Short:", self.longEntry, self.shortEntry, self.rsival)
             if self.pos == 0:
                 self.longEntered = False
                 self.shortEntered = False
