@@ -156,7 +156,11 @@ class BreakoutCloseStrategy(CtaTemplate):
         self.capConfig = 0.0
         self.onTradeCnt = 0
         self.bookTime = datetime.now()
-        self.am = ArrayManager(max(self.longDays,self.shortDays,self.atrDays)+1)        
+        self.am = ArrayManager(max(self.longDays,self.shortDays,self.atrDays)+1)
+
+        self.loginterval = 15
+        self.logcountdown = 0
+
     #----------------------------------------------------------------------
     def onInit(self):
         """初始化策略（必须由用户继承实现）"""
@@ -275,6 +279,18 @@ class BreakoutCloseStrategy(CtaTemplate):
         self.writeCtaLog(u'%s策略停止' %self.name)
         self.putEvent()
 
+    # ----------------------------------------------------------------------
+    def writeKeyValue(self):
+        """Update long short entry price（必须由用户继承实现）"""
+        #print("write key")
+        if self.logcountdown > self.loginterval:
+            self.logcountdown = 0
+            outstr = "Symbol("+self.vtSymbol+")Long Entry:"
+            outstr = outstr + str(self.longEntry) + ", Short Entry:" + str(self.shortEntry)
+            self.writeCtaLog(u'%s' %outstr )
+        self.logcountdown += 1
+        self.putEvent()
+
     #----------------------------------------------------------------------
     def onTick(self, tick):
         """收到行情TICK推送（必须由用户继承实现）"""
@@ -320,7 +336,7 @@ class BreakoutCloseStrategy(CtaTemplate):
             self.entryUnitNo = 0
             self.entryAtr = self.atrValue
         self.calcKPI()
-        print("BC:", self.longEntry, self.shortEntry)
+        #print("BC:", self.longEntry, self.shortEntry)
         if self.pos > 0:
             #self.sell(self.longExit,self.fixedSize,stop)
             if  bar.close < self.longExit:
@@ -345,7 +361,9 @@ class BreakoutCloseStrategy(CtaTemplate):
             if bar.close > self.shortExit:
                 self.cover(bar.close,abs(self.pos))
             else:
-                pass                        
+                pass
+
+        self.writeKeyValue()
 
         # 发出状态更新事件
         self.putEvent()

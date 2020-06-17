@@ -41,6 +41,8 @@ class KeltnerCommonStrategy(CtaTemplate):
     shortEntry = 0
     longExit = 0
     shortExit = 0
+    rsiconfig = 50
+    rsilen = 21
 
     #exitTime = time(hour=15, minute=20) #will not cover position when day close
 
@@ -94,6 +96,8 @@ class KeltnerCommonStrategy(CtaTemplate):
                         self.initDays = p[1]                                                 
                     if p[0] == 'p6':
                         self.rsilen = p[1]
+                    if p[0] == 'p7':
+                        self.rsiconfig = p[1]
         else:
             # 策略参数
             self.fixedSize = 1
@@ -103,6 +107,7 @@ class KeltnerCommonStrategy(CtaTemplate):
             self.maDays = 13
             self.atrDays = 20
             self.initDays = 55 # original value is 10  
+            self.rsiconfig = 50
             self.rsilen = 21
         #print(self.fixedSize,self.kUpper,self.kLower,self.maDays,self.initDays)             
         self.atrAvg = 0
@@ -112,14 +117,15 @@ class KeltnerCommonStrategy(CtaTemplate):
         self.shortEntry = 0
         self.longExit = 0
         self.shortExit = 0
-        self.rsival = 1000
-        self.rsiconfig = 50
     
         #exitTime = time(hour=15, minute=20) #will not cover position when day close
     
         self.longEntered = False
         self.shortEntered = False
-                
+
+        self.loginterval = 15
+        self.logcountdown = 0
+
     #----------------------------------------------------------------------
     def onInit(self):
         """初始化策略（必须由用户继承实现）"""
@@ -142,6 +148,18 @@ class KeltnerCommonStrategy(CtaTemplate):
     def onStop(self):
         """停止策略（必须由用户继承实现）"""
         self.writeCtaLog(u'%s策略停止' %self.name)
+        self.putEvent()
+
+    # ----------------------------------------------------------------------
+    def writeKeyValue(self):
+        """Update long short entry price（必须由用户继承实现）"""
+        #print("write key")
+        if self.logcountdown > self.loginterval:
+            self.logcountdown = 0
+            outstr = "Symbol("+self.vtSymbol+")Long Entry:"
+            outstr = outstr + str(self.longEntry) + ", Short Entry:" + str(self.shortEntry)
+            self.writeCtaLog(u'%s' %outstr )
+        self.logcountdown += 1
         self.putEvent()
 
     #----------------------------------------------------------------------
@@ -272,7 +290,7 @@ class KeltnerCommonStrategy(CtaTemplate):
             return
         
         if True: # Trade Time, no matter when, just send signal
-            print("KK:", self.longEntry, self.shortEntry, self.rsival)
+            #print("KK:", self.longEntry, self.shortEntry, self.rsival)
             if self.pos == 0:
                 self.longEntered = False
                 self.shortEntered = False                
@@ -313,7 +331,11 @@ class KeltnerCommonStrategy(CtaTemplate):
                 self.sell(bar.close * 0.99, abs(self.pos))
             elif self.pos < 0:
                 self.cover(bar.close * 1.01, abs(self.pos))
- 
+
+
+        self.writeKeyValue()
+
+
         # 发出状态更新事件
         self.putEvent()
     #update day chart

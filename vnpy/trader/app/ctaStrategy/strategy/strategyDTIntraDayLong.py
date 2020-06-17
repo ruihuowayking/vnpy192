@@ -38,6 +38,8 @@ class DT_IntraDayLongStrategy(CtaTemplate):
     rangeLowClose = 0
     range1 = 0
     range2 = 0
+    rsiconfig = 50
+    rsilen = 21
 
     range = 0
     longEntry = 0
@@ -95,6 +97,11 @@ class DT_IntraDayLongStrategy(CtaTemplate):
                         self.atrDays = p[1]
                     if p[0] == 'p5':
                         self.initDays = p[1]
+                    if p[0] == 'p6':
+                        self.rsilen = p[1]
+                    if p[0] == 'p7':
+                        self.rsiconfig = p[1]
+
 
         else:
             # 策略参数
@@ -105,6 +112,8 @@ class DT_IntraDayLongStrategy(CtaTemplate):
             self.rangeDays = 4
             self.atrDays = 20
             self.initDays = 55  # original value is 10
+            self.rsiconfig = 50
+            self.rsilen = 21
         # print(self.fixedSize,self.k1,self.k2,self.rangeDays,self.initDays)
         self.dayOpen = 0
         self.rangeHigh = 0
@@ -122,8 +131,10 @@ class DT_IntraDayLongStrategy(CtaTemplate):
         self.longEntered = False
         self.shortEntered = False
         self.rsival = 1000
-        self.rsiconfig = 30
-        self.rsilen = 21
+
+        self.loginterval = 15
+        self.logcountdown = 0
+
 
     # ----------------------------------------------------------------------
     def onInit(self):
@@ -147,6 +158,18 @@ class DT_IntraDayLongStrategy(CtaTemplate):
     def onStop(self):
         """停止策略（必须由用户继承实现）"""
         self.writeCtaLog(u'%s策略停止' % self.name)
+        self.putEvent()
+
+    # ----------------------------------------------------------------------
+    def writeKeyValue(self):
+        """Update long short entry price（必须由用户继承实现）"""
+        #print("write key")
+        if self.logcountdown > self.loginterval:
+            self.logcountdown = 0
+            outstr = "Symbol("+self.vtSymbol+")Long Entry:"
+            outstr = outstr + str(self.longEntry) + ", Short Entry:" + str(self.shortEntry)
+            self.writeCtaLog(u'%s' %outstr )
+        self.logcountdown += 1
         self.putEvent()
 
     # ----------------------------------------------------------------------
@@ -290,7 +313,7 @@ class DT_IntraDayLongStrategy(CtaTemplate):
             self.writeCtaLog(u'RSI large than 100, need to check')
 
         if True:  # Trade Time, no matter when, just send signal
-            print("DT Long:", self.longEntry, self.shortEntry, self.rsival)
+            #print("DT Long:", self.longEntry, self.shortEntry, self.rsival)
             if self.pos == 0:
                 self.longEntered = False
                 self.shortEntered = False
@@ -318,6 +341,8 @@ class DT_IntraDayLongStrategy(CtaTemplate):
         # 收盘平仓 This will not execute
         else:
             pass
+
+        self.writeKeyValue()
 
         # 发出状态更新事件
         self.putEvent()
