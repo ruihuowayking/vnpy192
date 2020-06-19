@@ -292,7 +292,8 @@ class BreakoutAtrstopStrategy(CtaTemplate):
         if self.logcountdown > self.loginterval:
             self.logcountdown = 0
             outstr = "Symbol("+self.vtSymbol+")Long Entry:"
-            outstr = outstr + str(self.longEntry) + ", Short Entry:" + str(self.shortEntry)
+            outstr = outstr + str(round(self.longEntry,2)) + ", Short Entry:" + str(round(self.shortEntry,2))
+            outstr = outstr + "LongExit:" + str(round(self.longExit,2))+",ShortExit:"+str(round(self.shortExit,2))
             self.writeCtaLog(u'%s' %outstr )
         self.logcountdown += 1
         self.putEvent()

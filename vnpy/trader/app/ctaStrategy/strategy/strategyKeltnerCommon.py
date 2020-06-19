@@ -157,7 +157,8 @@ class KeltnerCommonStrategy(CtaTemplate):
         if self.logcountdown > self.loginterval:
             self.logcountdown = 0
             outstr = "Symbol("+self.vtSymbol+")Long Entry:"
-            outstr = outstr + str(self.longEntry) + ", Short Entry:" + str(self.shortEntry)
+            outstr = outstr + str(round(self.longEntry,2)) + ", Short Entry:" + str(round(self.shortEntry,2))
+            outstr = outstr + ",Exit:"+str(round(self.emamean,2))
             self.writeCtaLog(u'%s' %outstr )
         self.logcountdown += 1
         self.putEvent()
@@ -321,7 +322,7 @@ class KeltnerCommonStrategy(CtaTemplate):
                 self.shortEntered = True
                 self.longEntered = False
                 # 空头止损单
-                if bar.close > self.longExit:
+                if bar.close > self.shortExit:
                     #self.cover(self.longEntry + 2, self.fixedSize)                
                     self.cover(bar.close,self.pos)
 
