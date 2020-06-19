@@ -1,30 +1,36 @@
 [
     {
-        "name": "AP_DT",
+        "name": "TA_TTC",
         "className": "BreakoutCloseStrategy",
         "vtSymbol": "TA009",
         "strParams":[["unit",1],["p1",4],["p2",4],["p3",2],["p4",2],["p5",55]]
     },
     {
-        "name": "AP_BcAtr",
+        "name": "TA_TTORG",
+        "className": "TurtleUseCloseStrategy",
+        "vtSymbol": "TA009",
+        "strParams":[["unit",1],["p1",4],["p2",4],["p3",2],["p4",2],["p5",55]]
+    },
+    {
+        "name": "TA_TTATR",
         "className": "BreakoutAtrstopStrategy",
         "vtSymbol": "TA009",
         "strParams":[["unit",1],["p1",4],["p2",4],["p3",5],["p4",5],["p5",55]]
     },
     {
-        "name": "TS_DT_Long",
+        "name": "TA_DT_Long",
         "className": "DT_IntraDayLongStrategy",
         "vtSymbol": "TA009",
         "strParams":[["unit",1],["p1",0.1],["p2",0.1],["p3",5],["p4",20],["p5",55],["p6",21],["p7",50]]
     },
     {
-        "name": "TS_DT_Short",
+        "name": "RB_DT_Short",
         "className": "DT_IntraDayShortStrategy",
         "vtSymbol": "rb2010",
         "strParams":[["unit",1],["p1",0.1],["p2",0.1],["p3",5],["p4",20],["p5",55],["p6",21],["p7",50]]
     },
     {
-        "name": "TS_KK",
+        "name": "J_KK",
         "className": "KeltnerCommonStrategy",
         "vtSymbol": "j2009",
         "strParams":[["unit",1],["p1",0.2],["p2",0.2],["p3",13],["p4",20],["p5",55],["p6",21],["p7",50]]
